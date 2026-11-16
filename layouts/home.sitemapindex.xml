@@ -1,0 +1,7 @@
+{{- printf "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\"?>" | safeHTML }}
+<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <sitemap><loc>{{ "sitemap-home.xml" | absURL }}</loc></sitemap>
+  {{- range hugo.Data.projects.sites }}
+  <sitemap><loc>{{ printf "%s/sitemap.xml" . | absURL }}</loc></sitemap>
+  {{- end }}
+</sitemapindex>

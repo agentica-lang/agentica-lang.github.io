@@ -1,12 +1,21 @@
-- name: Documentation
-  url: /agentica/
-- name: Library
-  url: /agentica/library/
-- name: Bond
-  url: /bond/
-- name: agentica-db
-  url: /agentica-db/
-- name: Packages
-  url: /packages/
-- name: GitHub
-  url: https://github.com/agentica-lang
+# The links of the sidebar.
+nav:
+  - name: Documentation
+    url: /agentica/
+  - name: Library
+    url: /agentica/library/
+  - name: Bond
+    url: /bond/
+  - name: agentica-db
+    url: /agentica-db/
+  - name: Packages
+    url: /packages/
+  - name: GitHub
+    url: https://github.com/agentica-lang
+# The repos with a project site at /<repo>/: /sitemap.xml lists each one's sitemap.
+sites:
+  - agentica
+  - bond
+  - agentica-db
+  - packages
+  - cchecker

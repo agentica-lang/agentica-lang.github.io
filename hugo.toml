@@ -16,7 +16,7 @@ enableRobotsTXT = true
   tag = "tags"
 
 [outputs]
-  home = ["html", "rss", "markdown", "search", "llms", "llmsfull"]
+  home = ["html", "rss", "markdown", "search", "llms", "llmsfull", "sitemapindex"]
   section = ["html", "rss", "markdown"]
   taxonomy = ["html"]
   term = ["html", "rss"]
@@ -24,8 +24,16 @@ enableRobotsTXT = true
 [services.rss]
   limit = 20
 
+# /sitemap.xml is an index of this site's sitemap and the sitemaps of the project sites (data/projects.yaml).
 [sitemap]
   changeFreq = "weekly"
+  filename = "sitemap-home.xml"
+
+[outputFormats.sitemapindex]
+  mediaType = "application/xml"
+  baseName = "sitemap"
+  isPlainText = true
+  root = true
 
 [module.hugoVersion]
   extended = true

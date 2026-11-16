@@ -6,7 +6,7 @@
     {{- range site.Home.Pages.ByWeight }}
     {{ partial "sidebar-item.html" (dict "page" . "current" $current) }}
     {{- end }}
-    {{- range hugo.Data.projects }}
+    {{- range hugo.Data.projects.nav }}
     <li><a href="{{ .url }}">{{ .name }}</a></li>
     {{- end }}
   </ul>
