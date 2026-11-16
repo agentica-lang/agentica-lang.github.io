@@ -1,0 +1,36 @@
+# The Ecosystem page (/ecosystem/): one entry per project, in groups. A new project is one entry.
+- group: Frameworks and libraries
+  projects:
+    - name: Bond
+      url: /bond/
+      description: A small web framework in the spirit of Sinatra, with routes, filters, error pages and a test helper that needs no socket.
+    - name: agentica-db
+      url: /agentica-db/
+      description: One API for SQLite, PostgreSQL and MySQL or MariaDB, and a small typed ORM on top.
+    - name: Packages
+      url: /packages/
+      description: Small packages you add to a project with a git tag and a subdir.
+      highlights:
+        - name: pool
+          url: /packages/pool/
+          description: a pool of long-lived resources, lent to one caller at a time
+        - name: prop
+          url: /packages/prop/
+          description: property-based testing, with the smallest input that breaks a law
+        - name: native-gen
+          url: /packages/native-gen/
+          description: the C header of an `extern module` block
+        - name: dock
+          url: /packages/dock/
+          description: a TCP server with one task per client
+- group: Tools
+  projects:
+    - name: agc-lsp
+      url: https://github.com/agentica-lang/agc-lsp
+      description: The language server (LSP) for Agentica, for editors that speak LSP.
+    - name: tree-sitter-agentica
+      url: https://github.com/agentica-lang/tree-sitter-agentica
+      description: The tree-sitter grammar of Agentica, for editors that parse with tree-sitter.
+    - name: agc-tmlanguage
+      url: https://github.com/agentica-lang/agc-tmlanguage
+      description: The TextMate grammar that colors Agentica code in editors and on these sites.

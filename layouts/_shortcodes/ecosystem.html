@@ -1,0 +1,17 @@
+{{- range hugo.Data.ecosystem }}
+<h2 id="{{ .group | anchorize }}">{{ .group }}</h2>
+<ul class="pages">
+  {{- range .projects }}
+  <li>
+    <a href="{{ .url }}">{{ .name }}</a> <span>{{ .description | markdownify }}</span>
+    {{- with .highlights }}
+    <ul>
+      {{- range . }}
+      <li><a href="{{ .url }}">{{ .name }}</a> <span>{{ .description | markdownify }}</span></li>
+      {{- end }}
+    </ul>
+    {{- end }}
+  </li>
+  {{- end }}
+</ul>
+{{- end }}

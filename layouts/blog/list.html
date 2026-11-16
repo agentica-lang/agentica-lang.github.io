@@ -1,5 +1,6 @@
 {{ define "main" }}
 <article class="content">
+  {{- partial "breadcrumbs.html" . }}
   <div class="page-head"><h1>{{ .Title }}</h1></div>
   {{ .Content }}
   {{ partial "post-list.html" .Pages.ByDate.Reverse }}

@@ -28,6 +28,7 @@ jobs:
         with:
           submodules: true
           persist-credentials: false
+          fetch-depth: 0
       - name: Install Hugo and Dart Sass
         run: |
           mkdir -p "$RUNNER_TEMP/bin"

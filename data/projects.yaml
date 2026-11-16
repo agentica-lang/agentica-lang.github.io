@@ -1,15 +1,13 @@
-# The links of the sidebar.
+# The links of the sidebar, after Home.
 nav:
   - name: Documentation
     url: /agentica/
   - name: Library
     url: /agentica/library/
-  - name: Bond
-    url: /bond/
-  - name: agentica-db
-    url: /agentica-db/
-  - name: Packages
-    url: /packages/
+  - name: Blog
+    url: /blog/
+  - name: Ecosystem
+    url: /ecosystem/
   - name: GitHub
     url: https://github.com/agentica-lang
 # The repos with a project site at /<repo>/: /sitemap.xml lists each one's sitemap.

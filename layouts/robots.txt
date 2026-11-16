@@ -1,4 +1,10 @@
 User-agent: *
 Allow: /
+# The Markdown and llms copies under the folders of old versions (/agentica/0.32.0/...); their pages point at the
+# latest version, and these copies cannot carry a canonical URL.
+Disallow: /agentica/*.*.*/*.md$
+Disallow: /agentica/*.*.*/llms
+Disallow: /bond/*.*.*/*.md$
+Disallow: /bond/*.*.*/llms
 
 Sitemap: {{ "sitemap.xml" | absURL }}
