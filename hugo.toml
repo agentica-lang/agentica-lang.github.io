@@ -1,0 +1,32 @@
+# The look, the layouts and the outputs come from the docs theme (themes/docs-theme), as on the docs sites.
+_merge = "deep"
+baseURL = "https://www.agentica-lang.com/"
+locale = "en"
+title = "Agentica"
+theme = "docs-theme"
+enableRobotsTXT = true
+
+[params]
+  description = "Agentica is Ruby with static types: Ruby-like syntax, checked before running, with immutable values."
+  tagline = "Ruby with static types"
+  repo = "https://github.com/agentica-lang"
+  repoPublic = true
+
+[taxonomies]
+  tag = "tags"
+
+[outputs]
+  home = ["html", "rss", "markdown", "search", "llms", "llmsfull"]
+  section = ["html", "rss", "markdown"]
+  taxonomy = ["html"]
+  term = ["html", "rss"]
+
+[services.rss]
+  limit = 20
+
+[sitemap]
+  changeFreq = "weekly"
+
+[module.hugoVersion]
+  extended = true
+  min = "0.167.0"

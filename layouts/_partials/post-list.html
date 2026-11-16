@@ -1,0 +1,7 @@
+<ul class="pages">
+  {{- range . }}
+  <li><a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a> <span><time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "January 2, 2006" }}</time></span></li>
+  {{- else }}
+  <li>No posts yet.</li>
+  {{- end }}
+</ul>

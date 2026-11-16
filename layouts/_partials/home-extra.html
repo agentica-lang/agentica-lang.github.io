@@ -1,0 +1,3 @@
+<h2 id="latest-posts">Latest posts</h2>
+{{ partial "post-list.html" (first 5 (where site.RegularPages "Section" "blog")) }}
+<p><a href="{{ "blog/" | relURL }}">All posts</a> · <a href="{{ "blog/index.xml" | relURL }}">RSS</a></p>
