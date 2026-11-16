@@ -8,7 +8,7 @@ tags: [tutorial, bond, agentica-db, web]
 
 This tutorial builds a small JSON API in [Agentica](https://www.agentica-lang.com/agentica/), from an empty folder to a server that you can call with `curl`. The API manages a todo list: list, get, create, update and delete. It uses [Bond](https://www.agentica-lang.com/bond/), a small web framework, and [agentica-db](https://www.agentica-lang.com/agentica-db/), a database package, with SQLite.
 
-You will see JSON in and out, routes with path params, a filter that checks an API key, validation that answers `422`, and a test. The whole program is one file of about 110 lines. The last section of the post has it in one piece, so you can copy it and run it.
+You will see JSON in and out, routes with path params, a filter that checks an API key, validation that answers `422`, and a test. The whole program is one file of about 110 lines. The code comes in pieces, in the order of the file, so pasting the pieces one after another gives the file. The last section has it in one block, ready to copy and run.
 
 Everything here ran on Agentica 0.33.0, Bond 0.14.0 and agentica-db 0.12.0. You need Agentica on your `PATH`, the `libsqlite3` library (the package `libsqlite3-0` on Debian and Ubuntu) and a C compiler. The compiler builds the native SQLite driver the first time the program runs. Without one, agentica-db prints a warning and uses a slower driver.
 
@@ -55,9 +55,9 @@ db = { git = "https://github.com/agentica-lang/agentica-db", tag = "0.12.0", sub
 
 If you write the dependencies by hand instead, run `agentica update` to write `agentica.lock` and fetch the files. `agentica install` puts the files of an existing lock in `deps/`, for example on a fresh checkout.
 
-## 2. Imports, constants and the database
+## 2. Imports and constants
 
-Put the rest in a file called `todos.agc`. It starts with the imports and three constants:
+Put the program in a file called `todos.agc`. It starts with the imports and three constants:
 
 ```agentica
 import Bond from "pkg/bond/bond"
@@ -76,21 +76,6 @@ CREATE_TODOS = (
 
 `pkg/bond/bond` is Bond. `pkg/db/db`, `pkg/db/db_pool`, `pkg/db/orm` and `pkg/db/sqlite` are four modules of agentica-db: `Db` runs SQL, `DbPool` shares connections, `Orm` reads rows into structs, and `Sqlite` is the driver.
 
-Next, the code that opens the database and makes the table:
-
-```agentica
-def open_pool(url: String) -> Result[DbPool.Pool]
-  pool = try DbPool.start(DbPool.Options(url: url, drivers: [Sqlite.driver()]))
-  try DbPool.with(pool) do |db| Db.execute(db, CREATE_TODOS, []) end
-
-  ok(pool)
-end
-```
-
-Why a pool? Bond runs each request in its own task, and a database connection belongs to the task that opened it. `DbPool.start` opens connections in tasks of its own, and `DbPool.with` lends one to a block of code. The handlers below get the pool and borrow a connection for each request.
-
-`Db.execute` takes the connection, the SQL and a list of parameters. Each call returns a `Result`, and `try` passes an error up to the caller. `create table if not exists` lets the server start again on an existing file.
-
 ## 3. The struct and JSON
 
 ```agentica
@@ -105,22 +90,87 @@ def todos() -> Orm.Schema[Todo] = Orm.schema("todos", Todo.codec)
 
 A `struct` is a record with typed fields. Every struct has a `.codec` that turns it into JSON and back. The same struct is the row of the table: `Orm.schema("todos", Todo.codec)` ties it to the `todos` table, with the columns named like the fields.
 
-`id` and `done` have defaults. So a client can send `{"title": "buy milk"}`, and the `id` is given by the database.
+`id` and `done` have defaults, so a client can send `{"title": "buy milk"}` and the database gives the `id`.
 
-## 4. Reading todos
+## 4. The database
 
-Handlers are functions that take a `Bond.Conn`, the request and the answer in one value, and return `Result[Bond.Conn]`. The first two read:
+```agentica
+def open_pool(url: String) -> Result[DbPool.Pool]
+  pool = try DbPool.start(DbPool.Options(url: url, drivers: [Sqlite.driver()]))
+  try DbPool.with(pool) do |db| Db.execute(db, CREATE_TODOS, []) end
+
+  ok(pool)
+end
+```
+
+This opens the database and makes the table. Why a pool? Bond runs each request in its own task, and a database connection belongs to the task that opened it. `DbPool.start` opens connections in tasks of its own, and `DbPool.with` lends one to a block of code. The handlers below get the pool and borrow a connection for each request.
+
+`Db.execute` takes the connection, the SQL and a list of parameters. Each call returns a `Result`, and `try` passes an error up to the caller. `create table if not exists` lets the server start again on an existing file.
+
+## 5. The routes
+
+```agentica
+def build(pool: DbPool.Pool) -> Bond.App
+  (
+    Bond.app()
+    |> Bond.before(&Bond.log_request)
+    |> Bond.before(&require_key)
+    |> Bond.get("/todos", ->(conn) { list(pool, conn) })
+    |> Bond.get("/todos/:id", ->(conn) { show(pool, conn) })
+    |> Bond.post("/todos", ->(conn) { create(pool, conn) })
+    |> Bond.put("/todos/:id", ->(conn) { update(pool, conn) })
+    |> Bond.delete("/todos/:id", ->(conn) { remove(pool, conn) })
+  )
+end
+
+def main() -> Void
+  pool = open_pool("sqlite:todos.db").unwrap!
+  Bond.run(build(pool), "127.0.0.1", 4567).unwrap!
+end
+```
+
+Each `Bond.get`, `Bond.post`, `Bond.put` and `Bond.delete` takes the app, a path pattern and a handler, and returns a new app. The `|>` pipe passes the app to each call, so the routes read as one list. A segment that starts with a colon, such as `:id`, matches one segment of the path.
+
+A handler is a function from a `Bond.Conn`, which holds the request and the answer, to `Result[Bond.Conn]`. The app does not hold your state, so each route is a small lambda, `->(conn) { list(pool, conn) }`, that has the pool in reach. A function that needs only the `conn` is passed by name, as `&require_key` is. `Bond.before` adds a filter, which is explained in step 6.
+
+`Bond.run` starts the server and returns when it closes. `open_pool` and `Bond.run` both return a `Result`. In `main` they use `unwrap!`, which stops the program with the error if the database cannot be opened or the port is taken.
+
+The handlers are defined below. `build`, `open_pool` and `main` come first because they are the public part of the file: the test in step 10 imports `build` and `open_pool`.
+
+## 6. A filter: the API key
+
+On its own line, `private` ends the public part: the functions after it are used only in this file. The first two are the filter and a helper for errors.
+
+```agentica
+private
+
+def require_key(conn: Bond.Conn) -> Result[Bond.Conn]
+  return ok(conn) if Bond.request_header(conn, "x-api-key").unwrap_or("") == API_KEY
+
+  ok(failure(conn, 401, "missing or wrong X-Api-Key"))
+end
+
+def failure(conn: Bond.Conn, status: Int, message: String) -> Bond.Conn
+  Bond.json(conn, status, JSON.from({"error": message})).with(halted: true)
+end
+```
+
+A filter is a handler that runs before (or after) the route, and filters run in the order they were added. `build` adds two: `Bond.log_request`, which Bond provides and which writes `METHOD /path` of each request to the server's stderr, and our own `require_key`.
+
+`require_key` reads the `x-api-key` header. If it is right, the filter returns the `conn` unchanged and the request goes on. If not, it answers `401`, and `halted: true` tells Bond to stop: the route does not run.
+
+`failure` is the helper for the errors of our code, which are JSON in the form `{"error": "..."}`. The errors that Bond answers by itself are plain text: a `404` for a path with no route, a `405` for a wrong method, and a `400` for a body that is not valid. `Bond.not_found` and `Bond.on_error` change the `404` and the `500` if you want JSON there too.
+
+The key is a constant here to keep the example short. A real service reads it from the environment.
+
+## 7. Reading todos
 
 ```agentica
 def list(pool: DbPool.Pool, conn: Bond.Conn) -> Result[Bond.Conn]
   rows = try DbPool.with(pool) do |db| Orm.query(db, todos(), "select id, title, done from todos order by id", []) end
   ok(Bond.json(conn, 200, JSON.from(rows)))
 end
-```
 
-`Orm.query` runs a select and reads each row into a `Todo`. `Bond.json` answers with a `JSON.Value`, and `JSON.from` makes one from the list.
-
-```agentica
 def show(pool: DbPool.Pool, conn: Bond.Conn) -> Result[Bond.Conn]
   id = try Bond.param_int(conn, "id")
   found = try DbPool.with(pool) do |db| Orm.find(db, todos(), Db.Value.Int(id)) end
@@ -131,9 +181,13 @@ def show(pool: DbPool.Pool, conn: Bond.Conn) -> Result[Bond.Conn]
 end
 ```
 
+`Orm.query` runs a select and reads each row into a `Todo`. `Bond.json` answers with a `JSON.Value`, and `JSON.from` makes one from the list.
+
 `Bond.param_int(conn, "id")` reads the `:id` of the route as an `Int`. A text that is not a number is a `400`. `Orm.find` returns an `Optional`: `some(todo)` or `none`. A `case` handles both, and a missing todo is a `404` with a JSON error. `Bond.json_as` encodes a struct with its codec.
 
-## 5. Creating, updating and deleting
+If the database fails, the `try` passes the error up, and Bond answers a plain `500` with the text `Internal Server Error`. The message goes to the server's stderr, never to the client.
+
+## 8. Creating, updating, deleting and validating
 
 ```agentica
 def create(pool: DbPool.Pool, conn: Bond.Conn) -> Result[Bond.Conn]
@@ -145,11 +199,7 @@ def create(pool: DbPool.Pool, conn: Bond.Conn) -> Result[Bond.Conn]
       ok(Bond.json_as(conn, 201, Todo.codec, saved))
   end
 end
-```
 
-`Bond.json_body(conn, Todo.codec)` decodes the body into a `Todo`. If the body is not JSON, or does not fit the struct, the `try` makes the request a `400` with a message, and the handler needs no more code. We will see `valid` in a moment. `Orm.insert` writes the row and returns it with its new `id`, and the handler answers `201`.
-
-```agentica
 def update(pool: DbPool.Pool, conn: Bond.Conn) -> Result[Bond.Conn]
   id = try Bond.param_int(conn, "id")
   input = try Bond.json_body(conn, Todo.codec)
@@ -163,11 +213,7 @@ def update(pool: DbPool.Pool, conn: Bond.Conn) -> Result[Bond.Conn]
       ok(Bond.json_as(conn, 200, Todo.codec, todo))
   end
 end
-```
 
-`update` takes the `id` from the path, not from the body: `checked.with(id: id)` makes a copy of the todo with that id. Structs never change, so `with` always makes a new value. `Orm.update` returns how many rows it changed, and `0` means no such todo, a `404`.
-
-```agentica
 def remove(pool: DbPool.Pool, conn: Bond.Conn) -> Result[Bond.Conn]
   id = try Bond.param_int(conn, "id")
   removed = try DbPool.with(pool) do |db| Orm.delete(db, todos(), Db.Value.Int(id)) end
@@ -177,57 +223,11 @@ def remove(pool: DbPool.Pool, conn: Bond.Conn) -> Result[Bond.Conn]
 end
 ```
 
-`Orm.delete` returns the number of removed rows too. On success the answer is `204` with no body.
+`Bond.json_body(conn, Todo.codec)` decodes the body into a `Todo`. If the body is not JSON, does not fit the struct, or comes without the header `content-type: application/json`, the `try` makes the request a `400` with a message, and the handler needs no more code. `Orm.insert` writes the row and returns it with its new `id`, and the handler answers `201`.
 
-## 6. The routes
+`update` takes the `id` from the path, not from the body: `checked.with(id: id)` makes a copy of the todo with that id. Structs never change, so `with` always makes a new value. `Orm.update` returns how many rows it changed, and `0` means no such todo, a `404`. `Orm.delete` returns the number of removed rows too, and on success the answer is `204` with no body.
 
-```agentica
-def build(pool: DbPool.Pool) -> Bond.App
-  app = Bond.app()
-  app = Bond.before(app, &Bond.log_request)
-  app = Bond.before(app, &require_key)
-  app = Bond.get(app, "/todos") do |conn| list(pool, conn) end
-  app = Bond.get(app, "/todos/:id") do |conn| show(pool, conn) end
-  app = Bond.post(app, "/todos") do |conn| create(pool, conn) end
-  app = Bond.put(app, "/todos/:id") do |conn| update(pool, conn) end
-  Bond.delete(app, "/todos/:id") do |conn| remove(pool, conn) end
-end
-
-def main() -> Void
-  pool = open_pool("sqlite:todos.db").unwrap!
-  Bond.run(build(pool), "127.0.0.1", 4567).unwrap!
-end
-```
-
-Each `Bond.get`, `Bond.post`, `Bond.put` and `Bond.delete` takes the app, a path pattern and a handler, and returns a new app. A segment that starts with a colon, such as `:id`, matches one segment of the path. Bond also lets you chain these calls with `|>`; here each step is a plain call, so you can read them one by one.
-
-The handler of a route is a block that has the pool in reach: `do |conn| list(pool, conn) end`. The app does not hold your state, so a closure carries it.
-
-`Bond.run` starts the server and returns when it closes. `open_pool` and `Bond.run` both return a `Result`; in `main` they use `unwrap!`, which stops the program with the error if the database cannot be opened or the port is taken.
-
-`private` on its own line splits the file: everything above it is public, and the functions below it are used only here. The test in step 10 imports `build` and `open_pool`.
-
-## 7. A filter: the API key
-
-A filter is a handler that runs before (or after) the route. `Bond.before(app, filter)` adds one, and filters run in the order they were added. The two in `build` are `Bond.log_request`, which Bond provides and which writes `METHOD /path` to stderr, and our own `require_key`:
-
-```agentica
-def require_key(conn: Bond.Conn) -> Result[Bond.Conn]
-  return ok(conn) if Bond.request_header(conn, "x-api-key").unwrap_or("") == API_KEY
-
-  ok(failure(conn, 401, "missing or wrong X-Api-Key"))
-end
-
-def failure(conn: Bond.Conn, status: Int, message: String) -> Bond.Conn
-  Bond.json(conn, status, JSON.from({"error": message})).with(halted: true)
-end
-```
-
-`require_key` reads the `x-api-key` header. If it is right, the filter returns the `conn` unchanged and the request goes on. If not, it answers `401`, and `halted: true` tells Bond to stop: the route is not run. `failure` is the helper that every error in this file uses, so all errors are JSON in the form `{"error": "..."}`.
-
-The key is a constant here to keep the example short. A real service reads it from the environment.
-
-## 8. Validation and 422
+The last piece is the validation that `create` and `update` call:
 
 ```agentica
 def valid(todo: Todo) -> Result[Todo]
@@ -241,7 +241,7 @@ end
 
 `valid` returns a `Result[Todo]`: the todo with its title trimmed, or an error with a message. A `case` in `create` and `update` turns an error into a `422`, and the message goes into the JSON.
 
-Two kinds of mistakes are in play, with two statuses. A body that is not JSON, or has no `title`, is a `400`: Bond refuses it before your code runs. A body that is JSON of the right shape, but breaks a rule of yours (a blank title, or one over 80 characters), is a `422`.
+Two kinds of mistakes have two statuses. A body that is not JSON, or has no `title`, is a `400`: Bond refuses it before your code runs. A body that fits the struct but breaks a rule of yours, such as a blank title or one over 80 characters, is a `422`.
 
 ## 9. Run it
 
@@ -288,41 +288,20 @@ $ api http://127.0.0.1:4567/todos
 [{"done":true,"id":1,"title":"buy oat milk"}] [200]
 ```
 
-Notes on the output:
+The first call has no key, so the filter answers `401`. A new todo is `201` with its `id`. The `GET` of a todo that does not exist is a `404`, and so is the second `DELETE` of the same id. A blank title is a `422` with our message, and a body with no `title` at all is a `400` from Bond. The server's terminal shows one line per request, such as `GET /todos/99`, from the log filter.
 
-- The first call has no key, so the filter answers `401`.
-- A new todo is `201` with its `id`. The `GET` of a todo that does not exist is a `404`, and so is the second `DELETE` of the same id.
-- A blank title is a `422` with our message. A body with no `title` at all is a `400`, from Bond.
-- In the list, the keys are in alphabetical order. A JSON object has no order, and `JSON.from` writes them sorted. `Bond.json_as` keeps the order of the struct.
-
-The server's terminal shows one line per request, from the log filter:
-
-```text
-GET /todos
-GET /todos
-POST /todos
-POST /todos
-GET /todos
-GET /todos/1
-GET /todos/99
-PUT /todos/1
-POST /todos
-POST /todos
-DELETE /todos/2
-DELETE /todos/2
-GET /todos
-```
+In the list, the keys are in alphabetical order. A JSON object has no order, and `JSON.from` writes them sorted, while `Bond.json_as` keeps the order of the struct.
 
 ## 10. A test (optional)
 
 You can stop here. If you want a test, put this in `test/todos_test.agc`. It is a second file, and `agentica test` finds it in the `test/` folder.
 
 ```agentica
-import HTTP from "std/http"
-import Bond from "pkg/bond/bond"
-import DbPool from "pkg/db/db_pool"
-import Testing from "pkg/bond/testing"
 import Todos from "../todos"
+import Bond from "pkg/bond/bond"
+import Testing from "pkg/bond/testing"
+import DbPool from "pkg/db/db_pool"
+import HTTP from "std/http"
 
 MILK = "{\"id\":1,\"title\":\"buy milk\",\"done\":false}"
 
@@ -408,14 +387,16 @@ def open_pool(url: String) -> Result[DbPool.Pool]
 end
 
 def build(pool: DbPool.Pool) -> Bond.App
-  app = Bond.app()
-  app = Bond.before(app, &Bond.log_request)
-  app = Bond.before(app, &require_key)
-  app = Bond.get(app, "/todos") do |conn| list(pool, conn) end
-  app = Bond.get(app, "/todos/:id") do |conn| show(pool, conn) end
-  app = Bond.post(app, "/todos") do |conn| create(pool, conn) end
-  app = Bond.put(app, "/todos/:id") do |conn| update(pool, conn) end
-  Bond.delete(app, "/todos/:id") do |conn| remove(pool, conn) end
+  (
+    Bond.app()
+    |> Bond.before(&Bond.log_request)
+    |> Bond.before(&require_key)
+    |> Bond.get("/todos", ->(conn) { list(pool, conn) })
+    |> Bond.get("/todos/:id", ->(conn) { show(pool, conn) })
+    |> Bond.post("/todos", ->(conn) { create(pool, conn) })
+    |> Bond.put("/todos/:id", ->(conn) { update(pool, conn) })
+    |> Bond.delete("/todos/:id", ->(conn) { remove(pool, conn) })
+  )
 end
 
 def main() -> Void
