@@ -3,6 +3,9 @@ title: Build a JSON API in Agentica with Bond and agentica-db
 description: Build a todo list JSON API in Agentica with Bond and agentica-db on SQLite, with routes, an API key filter, validation, curl calls and a test.
 date: 2026-11-16
 draft: false
+cover_alt: "A todo list sends GET /todos to an Agentica JSON API backed by SQLite"
+build:
+  publishResources: false
 tags: [tutorial, bond, agentica-db, web]
 ---
 
