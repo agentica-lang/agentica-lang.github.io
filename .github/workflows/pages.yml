@@ -43,6 +43,21 @@ jobs:
           echo "$RUNNER_TEMP/dart-sass" >> "$GITHUB_PATH"
       - run: hugo version
       - run: hugo --gc --panicOnWarning
+      # The theme's highlighter colors the agentica blocks, which Hugo leaves to the Ruby lexer. It fails on a build with
+      # no agentica block, and most pages have none, so it runs only when a page has one.
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: themes/docs-theme/highlight/package-lock.json
+      - name: Color the agentica code blocks
+        run: |
+          if grep -rqE 'class="?agc-code' public; then
+            npm ci --prefix themes/docs-theme/highlight --ignore-scripts --no-audit --no-fund
+            node themes/docs-theme/highlight/highlight.mjs public
+          else
+            echo "no agentica code blocks"
+          fi
       - uses: actions/upload-pages-artifact@v5
         with:
           path: public
