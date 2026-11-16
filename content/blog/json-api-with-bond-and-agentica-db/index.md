@@ -13,7 +13,7 @@ This tutorial builds a small JSON API in [Agentica](https://www.agentica-lang.co
 
 You will see JSON in and out, routes with path params, a filter that checks an API key, validation that answers `422`, and a test. The whole program is one file of about 110 lines. The code comes in pieces, in the order of the file, so pasting the pieces one after another gives the file. The last section has it in one block, ready to copy and run.
 
-Everything here ran on Agentica 0.33.0, Bond 0.14.0 and agentica-db 0.12.0. You need Agentica on your `PATH`, the `libsqlite3` library (the package `libsqlite3-0` on Debian and Ubuntu) and a C compiler. The compiler builds the native SQLite driver the first time the program runs. Without one, agentica-db prints a warning and uses a slower driver.
+Everything here ran on Agentica 0.33.0, Bond 0.14.0 and agentica-db 0.13.0. You need Agentica on your `PATH`, the `libsqlite3` library (the package `libsqlite3-0` on Debian and Ubuntu) and a C compiler. The compiler builds the native SQLite driver the first time the program runs. Without one, agentica-db prints a warning and uses a slower driver.
 
 ## 1. The project
 
@@ -34,16 +34,16 @@ Add the two packages. Each command writes the dependency in `agentica.toml`, wri
 
 ```sh
 agentica add bond https://github.com/agentica-lang/bond --tag 0.14.0
-agentica add db https://github.com/agentica-lang/agentica-db --tag 0.12.0 --subdir src/db
+agentica add db https://github.com/agentica-lang/agentica-db --tag 0.13.0
 ```
 
 ```text
 added bond@0.14.0
-added db@0.12.0 (folder src/db)
+added db@0.13.0
 added pool@pool-0.1.3 (folder pool)
 ```
 
-agentica-db lives in the `src/db` folder of its repository, so it needs `subdir`. The third line is a package that agentica-db needs for its connection pool. Now the manifest has the dependencies:
+The third line is a package that agentica-db needs for its connection pool. Now the manifest has the dependencies:
 
 ```toml
 name = "todos"
@@ -53,7 +53,7 @@ blank_line_after_end = true
 
 [dependencies]
 bond = { git = "https://github.com/agentica-lang/bond", tag = "0.14.0" }
-db = { git = "https://github.com/agentica-lang/agentica-db", tag = "0.12.0", subdir = "src/db" }
+db = { git = "https://github.com/agentica-lang/agentica-db", tag = "0.13.0" }
 ```
 
 If you write the dependencies by hand instead, run `agentica update` to write `agentica.lock` and fetch the files. `agentica install` puts the files of an existing lock in `deps/`, for example on a fresh checkout.
