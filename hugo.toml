@@ -18,6 +18,8 @@ capitalizeListTitles = false
   # The large link card of every page with no image of its own (tools/social-image.sh makes it).
   socialImage = "/social.png"
   socialImageAlt = "Agentica: Ruby with static types"
+  # Every page links the blog feed (_partials/favicon.html), not its own or the root feed.
+  feedLink = false
 
   # The SoftwareSourceCode node of the home page's JSON-LD.
   [params.software]

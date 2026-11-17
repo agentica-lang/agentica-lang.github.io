@@ -1,10 +1,11 @@
-{{- /* The root feed, /index.xml, lists the blog posts only, as /blog/index.xml does: the other pages are not news. */ -}}
+{{- /* The root feed, /index.xml, is the blog feed (/blog/index.xml) for old subscribers: the same posts in the same
+order, under the same title. The pages link only the blog feed (_partials/favicon.html). */ -}}
 {{- $blog := site.GetPage "/blog" -}}
-{{- $pages := first site.Config.Services.RSS.Limit $blog.RegularPages.ByDate.Reverse -}}
+{{- $pages := first site.Config.Services.RSS.Limit $blog.RegularPages -}}
 {{- printf "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\"?>" | safeHTML }}
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>{{ site.Title }} blog</title>
+    <title>{{ $blog.Title }} on {{ site.Title }}</title>
     <link>{{ $blog.Permalink }}</link>
     <description>{{ $blog.Description }}</description>
     <language>{{ site.Language.Locale }}</language>
