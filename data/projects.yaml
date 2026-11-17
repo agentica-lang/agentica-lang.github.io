@@ -18,3 +18,4 @@ sites:
   - packages
   - cchecker
   - agentica-tui
+  - agc-agent
