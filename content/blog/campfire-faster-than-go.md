@@ -1,6 +1,6 @@
 ---
 title: A Campfire port in Agentica, measured against Go
-description: agentica-campfire, a port of ONCE Campfire to Agentica, served four chat pages 7 to 34% faster than the Go port in the Campfire verification benchmark. This post shows the numbers, how they were measured, why, and where Go is still ahead.
+description: agentica-campfire, a port of ONCE Campfire to Agentica, served four chat pages 17 to 44% faster than the Go port in the Campfire verification benchmark. This post shows the numbers, how they were measured, why, and where Go is still ahead.
 date: 2026-11-17
 draft: true
 tags: [performance, benchmark, bond, agentica-db, web]
@@ -18,9 +18,9 @@ Campfire has a shared benchmark, [once-campfire-verification](https://github.com
 
 The run in this post:
 
-- Run `20261108-222622-7`, on 2026-11-08, harness revision `ec02deb`.
+- Run `20261117-180015-7`, on 2026-11-17, harness revision `ec02deb`, and run `20261117-180912-7` right after it, which measured three routes again (below).
 - One laptop: an AMD Ryzen 5 3550H (4 cores, 8 threads). The server ran on CPUs 4-7 and the client on CPUs 0-3, so each had 2 cores (4 threads).
-- Agentica port at `8a7616e`: Agentica 0.27.0, Bond 0.10.1, agentica-db 0.8.0.
+- Agentica port at `bc8f983`: Agentica 0.34.0, Bond 0.13.0, agentica-db 0.11.0.
 - Go port at `c4ab53d`.
 
 The harness has no Agentica entry upstream. A small local patch adds one (the image name and the app's checkout); it does not change the load or the checks.
@@ -31,24 +31,28 @@ Requests per second, higher is better. The p99 is the range of the 99th percenti
 
 | Route | Go | Agentica | Agentica / Go | p99 Go | p99 Agentica |
 |---|---:|---:|---:|---:|---:|
-| room_show | 7077.0 | 9500.9 | 134% | 6.6–7.9 ms | 3.1–3.2 ms |
-| messages_page | 7424.0 | 9536.0 | 128% | 6.6–7.0 ms | 3.1–3.2 ms |
-| sidebar | 8201.1 | 9357.9 | 114% | 6.4–6.5 ms | 3.5–3.6 ms |
-| search | 8360.0 | 8953.4 | 107% | 6.4–6.5 ms | 3.4–3.8 ms |
+| room_show | 6978.9 | 10064.5 | 144% | 6.8–8.0 ms | 3.0–3.2 ms |
+| messages_page | 7398.3 | 10185.2 | 138% | 6.6–7.3 ms | 3.1–3.4 ms |
+| sidebar | 8068.0 | 10426.4 | 129% | 6.5–7.1 ms | 3.5–3.7 ms |
+| search | 8187.4 | 9552.0 | 117% | 6.6–6.8 ms | 3.4–3.8 ms |
+
+Across the 3 rounds, Go's requests per second moved by up to 8% (room_show: 6584 to 7134), and the port's by up to 3%.
 
 `room_show` is the page of a room with its last messages, `messages_page` the older messages, `sidebar` the list of rooms, and `search` a search for one word. No response failed its check.
 
-For scale: Rails Campfire, run by the same harness on the same machine three days earlier, served these pages at 834 to 990 requests per second.
+For scale: Rails Campfire, run by the same harness on the same machine on 2026-11-05, served these pages at 834 to 990 requests per second.
 
 ## Where Go is ahead
 
-The same run measured three more routes:
+Go still serves files faster. In the first run, Go's numbers on these two routes were low and spread wide (avatar: 18212 to 21248), so we ran them again right after, with `post_message`. The second run is the one below; Go was back at the level of earlier runs.
 
-- `avatar`, a person's picture: Go 21185.9, Agentica 7646.4 (36% of Go).
-- `static_css`, a stylesheet: Go 24902.3, Agentica 18006.9 (72% of Go). The two apps send different files: the port's stylesheet is 3.6 KB gzipped, Go's is 0.7 KB.
-- `up`, the health check: Go 15314.7, Agentica 21693.1 (142% of Go).
+- `avatar`, a person's picture: Go 21404.6, Agentica 7963.5 (37% of Go). In the first run: 18423.1 and 7789.9 (42%).
+- `static_css`, a stylesheet: Go 25526.0, Agentica 18948.8 (74% of Go). In the first run: 20601.5 and 18464.2 (90%). The two apps send different files: the port's stylesheet is 3.6 KB gzipped, Go's is 0.7 KB.
 
-`post_message`, posting a message, is not in this run. On this laptop, writes under load stalled for seconds that day: in three tries, Go fell from about 1100 to 91–211 posts per second, with a p99 of up to 3.8 s. Those numbers measured the disk, not the apps. In the last full run with writes (2026-11-07, Agentica 0.26.1), Go posted 1135.3 messages per second and Agentica 906.6 (80% of Go).
+The port is ahead on the two other routes of the run:
+
+- `up`, the health check: Go 14130.5, Agentica 22411.4 (159% of Go).
+- `post_message`, posting a message: Go 1024.0, Agentica 1255.4 (123% of Go), with a p99 of 51–56 ms for Go and 19–22 ms for the port. Every post was checked in the database afterwards. In the first run Go posted only 634.4 (565 to 696, p99 up to 104 ms) and the port 1160.3, so we count the second run. Writes on this laptop depend on the disk, and on 2026-11-08 they stalled for seconds, so take the write numbers with more care than the pages. Go was ahead on writes before: in the run of 2026-11-07, on Agentica 0.26.1, Go posted 1135.3 messages per second and the port 906.6 (80% of Go).
 
 ## Why the pages are fast
 
@@ -60,7 +64,7 @@ Rails Campfire keeps whole pages in a cache, for the person and the request, and
 
 **The page is kept as bytes.** The cached page is sent as `Bytes`, with no step through text. Before, it was cut out of a string, which walked every character of a page that has a non-ASCII character: about 140 µs per request.
 
-**The VM does the HTTP work in C.** Each connection is one task. The VM runs one scheduler thread per CPU it may use, and one I/O thread for the network. It parses the request head in C (picohttpparser behind a strict adapter), and it checks and writes the response head in C. The page cache is a shared table of the VM, which tasks on every scheduler read.
+**The VM does the HTTP work in C.** Each connection is one task. The VM runs one scheduler thread per CPU it may use, and since Agentica 0.33.0 a connection's reads and writes run on the scheduler of its task. It parses the request head in C (picohttpparser behind a strict adapter), and it checks and writes the response head in C. The page cache is a shared table of the VM, which tasks on every scheduler read.
 
 **A larger first heap.** The image starts the garbage collector with a 32 MB heap. With the default heap it collected every few requests.
 
@@ -70,17 +74,16 @@ EAG templates and the native SQLite driver of agentica-db work on a miss. An EAG
 
 ## How it got here
 
-Two days before this run, the same four pages were at 44 to 50% of Go. In between came the version read above, the native SQLite driver, the page body as bytes with the larger heap, and Agentica 0.27.0, among other changes to the app. Some of the pull requests measured their change with a local load test, but the benchmark ran only every few changes, so we cannot give each change its share. The steps are in the [pull requests](https://github.com/agentica-lang/agentica-campfire/pulls?q=is%3Apr+is%3Amerged) and the history of the README.
+On 2026-11-06 the same four pages were at 44 to 50% of Go. By 2026-11-08 (Agentica 0.27.0, app at `8a7616e`) they were at 107 to 134%. In between came the version read above, the native SQLite driver, the page body as bytes with the larger heap, and Agentica 0.27.0, among other changes to the app. From there to this run (Agentica 0.34.0, app at `bc8f983`), the port's pages rose by 6 to 11% while Go's moved by 2% or less: 9500.9 to 10064.5 on room_show, 9536.0 to 10185.2 on messages_page, 9357.9 to 10426.4 on sidebar, 8953.4 to 9552.0 on search. The app changed too in that time, so the gain is not Agentica alone. Some of the pull requests measured their change with a local load test, but the benchmark ran only every few changes, so we cannot give each change its share. The steps are in the [pull requests](https://github.com/agentica-lang/agentica-campfire/pulls?q=is%3Apr+is%3Amerged) and the history of the README.
 
 ## Limits
 
 - One machine, a laptop, with 2 cores for the server. More cores could change the order.
 - SQLite only, one person, one room, one search word, 16 clients.
-- Reads only. Writes were not measured in this run, and Go was ahead in the last run that measured them.
+- Writes are one route, on one laptop disk, and the two runs of this day gave Go 634.4 and 1024.0 posts per second. Go was ahead on writes in the run of 2026-11-07.
 - The pages are not byte for byte the same. The harness checks the messages in each page, not the markup.
 - On a hit, the port does not refresh the time of the session's last activity; it does so only when it looks the session up. Go checks it on every request.
 - The port is not at parity with Campfire yet. The missing parts are in [docs/plan.md](https://github.com/agentica-lang/agentica-campfire/blob/main/docs/plan.md).
-- These numbers are from Agentica 0.27.0. We have not run the benchmark again on later releases.
 - We compared with Go only. The harness has other ports that we did not run.
 
 ## Run it yourself
@@ -88,14 +91,15 @@ Two days before this run, the same four pages were at 44 to 50% of Go. In betwee
 You need Docker and a machine with nothing else running. In a checkout of agentica-campfire:
 
 ```sh
-docker build -t once-campfire-agentica:app .
 bench/run.sh --setup
+cd ~/apps/bench/once-campfire-agentica
+git fetch origin && git checkout --detach bc8f983
+docker build --build-arg CAMPFIRE_REVISION="$(git rev-parse HEAD)" -t once-campfire-agentica:app .
+cd -
 bench/run.sh --apps go,agentica
 ```
 
-To measure the revision of this post, build the image from `8a7616e`.
-
-`bench/run.sh` clones the harness at `ec02deb` into `~/apps/bench`, applies the local patch, builds the load generator and seeds the database. Then it runs `bin/benchmark` with the server on CPUs 4-7 and the client on CPUs 0-3. The Go port needs its own image (`once-campfire-go:app`) and a checkout of it next to the harness. This run left out `post_message`, so to repeat it, add `--routes room_show,messages_page,sidebar,search,avatar,static_css,up`. The method is in [docs/benchmarks.md](https://github.com/agentica-lang/agentica-campfire/blob/main/docs/benchmarks.md) and the steps in [bench/README.md](https://github.com/agentica-lang/agentica-campfire/blob/main/bench/README.md).
+`bench/run.sh` clones the harness at `ec02deb` into `~/apps/bench`, clones the port next to it, applies the local patch, builds the load generator and seeds the database. Then it runs `bin/benchmark` with the server on CPUs 4-7 and the client on CPUs 0-3. The image carries the revision it was built from, and `bench/run.sh` refuses to run an image whose revision is not the one of the clone that the harness records. The Go port needs its own image (`once-campfire-go:app`) and a checkout of it next to the harness. The method is in [docs/benchmarks.md](https://github.com/agentica-lang/agentica-campfire/blob/main/docs/benchmarks.md) and the steps in [bench/README.md](https://github.com/agentica-lang/agentica-campfire/blob/main/bench/README.md).
 
 ## Links
 
