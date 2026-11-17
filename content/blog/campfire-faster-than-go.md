@@ -19,7 +19,7 @@ Campfire has a shared benchmark, [once-campfire-verification](https://github.com
 The run in this post:
 
 - Run `20261117-180015-7`, on 2026-11-17, harness revision `ec02deb`, and run `20261117-180912-7` right after it, which measured three routes again (below).
-- One laptop: an AMD Ryzen 5 3550H (4 cores, 8 threads). The server ran on CPUs 4-7 and the client on CPUs 0-3, so each had 2 cores (4 threads).
+- One mini PC: an AMD Ryzen 5 3550H (4 cores, 8 threads). The server ran on CPUs 4-7 and the client on CPUs 0-3, so each had 2 cores (4 threads).
 - Agentica port at `bc8f983`: Agentica 0.34.0, Bond 0.13.0, agentica-db 0.11.0.
 - Go port at `c4ab53d`.
 
@@ -52,7 +52,7 @@ Go still serves files faster. In the first run, Go's numbers on these two routes
 The port is ahead on the two other routes of the run:
 
 - `up`, the health check: Go 14130.5, Agentica 22411.4 (159% of Go).
-- `post_message`, posting a message: Go 1024.0, Agentica 1255.4 (123% of Go), with a p99 of 51–56 ms for Go and 19–22 ms for the port. Every post was checked in the database afterwards. In the first run Go posted only 634.4 (565 to 696, p99 up to 104 ms) and the port 1160.3, so we count the second run. Writes on this laptop depend on the disk, and on 2026-11-08 they stalled for seconds, so take the write numbers with more care than the pages. Go was ahead on writes before: in the run of 2026-11-07, on Agentica 0.26.1, Go posted 1135.3 messages per second and the port 906.6 (80% of Go).
+- `post_message`, posting a message: Go 1024.0, Agentica 1255.4 (123% of Go), with a p99 of 51–56 ms for Go and 19–22 ms for the port. Every post was checked in the database afterwards. In the first run Go posted only 634.4 (565 to 696, p99 up to 104 ms) and the port 1160.3, so we count the second run. Writes on this mini PC depend on the disk, and on 2026-11-08 they stalled for seconds, so take the write numbers with more care than the pages. Go was ahead on writes before: in the run of 2026-11-07, on Agentica 0.26.1, Go posted 1135.3 messages per second and the port 906.6 (80% of Go).
 
 ## Why the pages are fast
 
@@ -78,9 +78,9 @@ On 2026-11-06 the same four pages were at 44 to 50% of Go. By 2026-11-08 (Agenti
 
 ## Limits
 
-- One machine, a laptop, with 2 cores for the server. More cores could change the order.
+- One machine, a mini PC, with 2 cores for the server. More cores could change the order.
 - SQLite only, one person, one room, one search word, 16 clients.
-- Writes are one route, on one laptop disk, and the two runs of this day gave Go 634.4 and 1024.0 posts per second. Go was ahead on writes in the run of 2026-11-07.
+- Writes are one route, on the one disk of a mini PC, and the two runs of this day gave Go 634.4 and 1024.0 posts per second. Go was ahead on writes in the run of 2026-11-07.
 - The pages are not byte for byte the same. The harness checks the messages in each page, not the markup.
 - On a hit, the port does not refresh the time of the session's last activity; it does so only when it looks the session up. Go checks it on every request.
 - The port is not at parity with Campfire yet. The missing parts are in [docs/plan.md](https://github.com/agentica-lang/agentica-campfire/blob/main/docs/plan.md).
