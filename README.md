@@ -9,4 +9,7 @@ hugo server -D     # needs Hugo extended 0.167.0+ and Dart Sass on PATH
 ```
 
 A push to `main` builds and deploys the site (`.github/workflows/pages.yml`).
-Posts go in `content/blog/`; `draft: true` keeps one unpublished.
+Posts go in `content/blog/`; `draft: true` keeps one unpublished. A post's
+link card uses its `cover.*` image (alt text: `imageAlt`), else
+`static/social.png`, which `sh tools/social-image.sh` makes with headless
+Chromium from `tools/social-image.html`.
