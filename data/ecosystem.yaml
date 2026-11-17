@@ -1,4 +1,5 @@
-# The Ecosystem page (/ecosystem/): one entry per project, in groups. A new project is one entry.
+# The Ecosystem page (/ecosystem/): one entry per project, in groups. A new project is one entry. `unreleased: true`
+# marks a package with no git tag yet, as the packages README does; drop it when the package is tagged.
 - group: Frameworks and libraries
   projects:
     - name: Bond
@@ -16,7 +17,7 @@
       highlights:
         - name: bond-channels
           url: /packages/bond-channels/
-          description: Action Cable channels for Bond apps, one WebSocket per tab with channels and a pub/sub hub
+          description: channels for Bond apps, as in Action Cable, one WebSocket per tab with channels and a pub/sub hub
         - name: dns
           url: /packages/dns/
           description: a DNS client over TCP, TLS and HTTPS, with the nameservers you choose
@@ -28,6 +29,7 @@
           description: an HTTP client with a pool of keep-alive connections and timeouts
         - name: jobs
           url: /packages/jobs/
+          unreleased: true
           description: jobs with a swappable backend, leases, retries and dead jobs
         - name: native-gen
           url: /packages/native-gen/
@@ -46,7 +48,8 @@
           description: a WebSocket client for ws:// and wss://
         - name: yaml
           url: /packages/yaml/
-          description: a YAML 1.2 parser that reads files into JSON values
+          unreleased: true
+          description: parses YAML text into JSON values
 - group: Tools
   projects:
     - name: Finn

@@ -44,6 +44,10 @@ Write `pages: "412"` instead, and the program does not run:
 ```text
 books.agc:9:39 error[CHECK-TYPE-MISMATCH]
 expected Int, found String
+
+9 |   books = [Book(title: "Dune", pages: "412"), Book(title: "Emma", pages: 192)]
+  |                                       ^^^^^
+  = help: convert it with s.to_i!
 ```
 
 ## Why Agentica
@@ -59,11 +63,11 @@ expected Int, found String
 On Linux x86-64:
 
 ```sh
-curl -fsSLO https://github.com/agentica-lang/agentica/releases/download/0.34.0/agentica-0.34.0-linux-x86_64.tar.gz
-curl -fsSLO https://github.com/agentica-lang/agentica/releases/download/0.34.0/SHA256SUMS
+curl -fsSLO https://github.com/agentica-lang/agentica/releases/download/{{< release >}}/agentica-{{< release >}}-linux-x86_64.tar.gz
+curl -fsSLO https://github.com/agentica-lang/agentica/releases/download/{{< release >}}/SHA256SUMS
 sha256sum -c --ignore-missing SHA256SUMS
-tar -xzf agentica-0.34.0-linux-x86_64.tar.gz
-export PATH="$PWD/agentica-0.34.0-linux-x86_64/bin:$PATH"
+tar -xzf agentica-{{< release >}}-linux-x86_64.tar.gz
+export PATH="$PWD/agentica-{{< release >}}-linux-x86_64/bin:$PATH"
 agentica --version
 ```
 

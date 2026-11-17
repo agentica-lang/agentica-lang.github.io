@@ -7,7 +7,7 @@
     {{- with .highlights }}
     <ul>
       {{- range . }}
-      <li><a href="{{ .url }}">{{ .name }}</a> <span>{{ .description | markdownify }}</span></li>
+      <li><a href="{{ .url }}">{{ .name }}</a>{{ if .unreleased }} (unreleased){{ end }} <span>{{ .description | markdownify }}</span></li>
       {{- end }}
     </ul>
     {{- end }}

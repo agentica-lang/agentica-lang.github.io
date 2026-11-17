@@ -3,7 +3,7 @@
 {{ range .projects }}
 - [{{ .name }}]({{ .url | absURL }}): {{ .description }}
 {{- range .highlights }}
-  - [{{ .name }}]({{ .url | absURL }}): {{ .description }}
+  - [{{ .name }}]({{ .url | absURL }}){{ if .unreleased }} (unreleased){{ end }}: {{ .description }}
 {{- end }}
 {{- end }}
 {{ end }}
