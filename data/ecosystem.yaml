@@ -1,4 +1,5 @@
-# The Ecosystem page (/ecosystem/): one entry per project, in groups. A new project is one entry.
+# The Ecosystem page (/ecosystem/): one entry per project, in groups. A new project is one entry. `unreleased: true`
+# marks a package with no git tag yet, as the packages README does; drop it when the package is tagged.
 - group: Frameworks and libraries
   projects:
     - name: Bond
@@ -14,23 +15,49 @@
       url: /packages/
       description: Small packages you add to a project with a git tag and a subdir.
       highlights:
+        - name: bond-channels
+          url: /packages/bond-channels/
+          description: channels for Bond apps, as in Action Cable, one WebSocket per tab with channels and a pub/sub hub
+        - name: dns
+          url: /packages/dns/
+          description: a DNS client over TCP, TLS and HTTPS, with the nameservers you choose
+        - name: dock
+          url: /packages/dock/
+          description: a TCP server with one task per client
+        - name: http-client
+          url: /packages/http-client/
+          description: an HTTP client with a pool of keep-alive connections and timeouts
+        - name: jobs
+          url: /packages/jobs/
+          unreleased: true
+          description: jobs with a swappable backend, leases, retries and dead jobs
+        - name: native-gen
+          url: /packages/native-gen/
+          description: the C header of an `extern module` block
+        - name: native-prebuilt
+          url: /packages/native-prebuilt/
+          description: a GitHub workflow that builds a native module on the five targets
         - name: pool
           url: /packages/pool/
           description: a pool of long-lived resources, lent to one caller at a time
         - name: prop
           url: /packages/prop/
           description: property-based testing, with the smallest input that breaks a law
-        - name: native-gen
-          url: /packages/native-gen/
-          description: the C header of an `extern module` block
-        - name: dock
-          url: /packages/dock/
-          description: a TCP server with one task per client
+        - name: websocket-client
+          url: /packages/websocket-client/
+          description: a WebSocket client for ws:// and wss://
+        - name: yaml
+          url: /packages/yaml/
+          unreleased: true
+          description: parses YAML text into JSON values
 - group: Tools
   projects:
     - name: Finn
       url: /agc-agent/
       description: A coding agent for the terminal, written in Agentica, with a local server, a line-mode client and a full-screen TUI.
+    - name: cchecker
+      url: /cchecker/
+      description: Checks C code for the rules of a project, and runs gcc -fanalyzer and clang-tidy in one command.
     - name: agc-lsp
       url: https://github.com/agentica-lang/agc-lsp
       description: The language server (LSP) for Agentica, for editors that speak LSP.
