@@ -6,7 +6,10 @@
   {{- with .GetTerms "tags" }} · {{ range $i, $t := . }}{{ if $i }}, {{ end }}<a href="{{ $t.RelPermalink }}">{{ $t.LinkTitle }}</a>{{ end }}{{ end }}</p>
   {{- with .Resources.GetMatch "cover.*" }}
   {{- $img := .Resize "1200x webp q85" }}
-  <img class="post-cover" style="display:block;max-width:100%;height:auto;border-radius:8px;margin:1rem 0" src="{{ $img.RelPermalink }}" width="{{ $img.Width }}" height="{{ $img.Height }}" alt="{{ $.Params.imageAlt | default $.Title }}">
+  {{- $srcset := slice }}
+  {{- range slice 400 800 }}{{ $srcset = $srcset | append (printf "%s %dw" ($img.Resize (printf "%dx" .)).RelPermalink .) }}{{ end }}
+  {{- $srcset = $srcset | append (printf "%s 1200w" $img.RelPermalink) }}
+  <img class="post-cover" style="display:block;max-width:100%;height:auto;border-radius:8px;margin:1rem 0" src="{{ $img.RelPermalink }}" srcset="{{ delimit $srcset ", " }}" sizes="(max-width: 50rem) 100vw, 50rem" width="{{ $img.Width }}" height="{{ $img.Height }}" alt="{{ $.Params.imageAlt | default $.Title }}">
   {{- end }}
   {{ .Content }}
   {{- partial "share.html" . }}

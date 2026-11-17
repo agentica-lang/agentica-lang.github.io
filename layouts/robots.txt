@@ -6,5 +6,10 @@ Disallow: /agentica/*.*.*/*.md$
 Disallow: /agentica/*.*.*/llms
 Disallow: /bond/*.*.*/*.md$
 Disallow: /bond/*.*.*/llms
+# The same copies of the dev docs (the next release), which point at the latest version too.
+Disallow: /agentica/dev/*.md$
+Disallow: /agentica/dev/llms
+Disallow: /bond/dev/*.md$
+Disallow: /bond/dev/llms
 
 Sitemap: {{ "sitemap.xml" | absURL }}

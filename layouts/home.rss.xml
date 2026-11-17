@@ -1,0 +1,27 @@
+{{- /* The root feed, /index.xml, lists the blog posts only, as /blog/index.xml does: the other pages are not news. */ -}}
+{{- $blog := site.GetPage "/blog" -}}
+{{- $pages := first site.Config.Services.RSS.Limit $blog.RegularPages.ByDate.Reverse -}}
+{{- printf "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\"?>" | safeHTML }}
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>{{ site.Title }} blog</title>
+    <link>{{ $blog.Permalink }}</link>
+    <description>{{ $blog.Description }}</description>
+    <language>{{ site.Language.Locale }}</language>
+    {{- with $pages }}
+    <lastBuildDate>{{ (index . 0).Date.Format "Mon, 02 Jan 2006 15:04:05 -0700" | safeHTML }}</lastBuildDate>
+    {{- end }}
+    {{- with .OutputFormats.Get "rss" }}
+    {{ printf "<atom:link href=%q rel=\"self\" type=%q />" .Permalink .MediaType | safeHTML }}
+    {{- end }}
+    {{- range $pages }}
+    <item>
+      <title>{{ .Title }}</title>
+      <link>{{ .Permalink }}</link>
+      <pubDate>{{ .Date.Format "Mon, 02 Jan 2006 15:04:05 -0700" | safeHTML }}</pubDate>
+      <guid>{{ .Permalink }}</guid>
+      <description>{{ .Description | default .Summary | plainify }}</description>
+    </item>
+    {{- end }}
+  </channel>
+</rss>

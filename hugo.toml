@@ -7,6 +7,8 @@ theme = "docs-theme"
 enableRobotsTXT = true
 # The sitemap dates each page by its last commit (pages.yml checks out the whole history).
 enableGitInfo = true
+# Tag pages keep the tag as written ("agentica-db", not "Agentica-Db").
+capitalizeListTitles = false
 
 [params]
   description = "Agentica is Ruby with static types: Ruby-like syntax, checked before running, with immutable values."
@@ -16,6 +18,19 @@ enableGitInfo = true
   # The large link card of every page with no image of its own (tools/social-image.sh makes it).
   socialImage = "/social.png"
   socialImageAlt = "Agentica: Ruby with static types"
+
+  # The SoftwareSourceCode node of the home page's JSON-LD.
+  [params.software]
+    codeRepository = "https://github.com/agentica-lang/agentica"
+    programmingLanguage = "Agentica"
+    license = "https://github.com/agentica-lang/agentica/blob/master/LICENSE"
+
+# Tag pages are lists of posts: search engines index the posts, not the lists.
+[[cascade]]
+  [cascade.params]
+    noindex = true
+  [cascade.target]
+    kind = "{taxonomy,term}"
 
 [taxonomies]
   tag = "tags"

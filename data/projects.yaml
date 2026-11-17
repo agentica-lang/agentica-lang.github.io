@@ -19,3 +19,10 @@ sites:
   - cchecker
   - agentica-tui
   - agc-agent
+# The project sites that publish an llms.txt: the "Projects" group of /llms.txt links each one.
+llms:
+  - agentica
+  - packages
+  - cchecker
+  - agentica-tui
+  - agc-agent
