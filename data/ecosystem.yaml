@@ -28,6 +28,9 @@
           description: a TCP server with one task per client
 - group: Tools
   projects:
+    - name: Finn
+      url: /agc-agent/
+      description: A coding agent for the terminal, written in Agentica, with a local server, a line-mode client and a full-screen TUI.
     - name: agc-lsp
       url: https://github.com/agentica-lang/agc-lsp
       description: The language server (LSP) for Agentica, for editors that speak LSP.
