@@ -2,7 +2,7 @@
 title: Agentica 0.33.0
 description: Agentica 0.33.0 adds Bytes.build, Actor.send and Actor.await, pseudo-terminals and Native.arena, and makes network servers, text work and cached starts faster.
 date: 2026-11-16
-draft: true
+draft: false
 tags: [release, performance]
 ---
 
@@ -27,16 +27,9 @@ Agentica 0.33.0 is out. This post lists what changed; the full list is in the [c
 
 ## agc-redis-s on 0.33.0
 
-[agc-redis-s](https://github.com/agentica-lang/agc-redis-s) is a Redis-compatible server written in Agentica. We ran the same code on 0.32.0 and on 0.33.0, with 4 schedulers:
+[agc-redis-s](https://github.com/agentica-lang/agc-redis-s) is a Redis-compatible server written in Agentica. We ran the same code on 0.32.0 and on 0.33.0 with redis-benchmark 8.0.2 and 4 schedulers. GET, LPUSH and MGET with a pipeline of 16 run 18 to 27% faster. With 1 scheduler the difference is within noise.
 
-| Benchmark | 0.33.0 against 0.32.0 |
-|---|---|
-| GET, pipeline of 16 | +23% |
-| GET, 1 KiB values | +27% |
-| LPUSH | +25% |
-| MGET | +18% |
-
-With `Bytes.build`, LRANGE_100 runs 3.1 to 3.8 times as fast.
+With `Bytes.build` building the replies, LRANGE_100 runs 3 to 4 times as fast. The numbers and the method are in [agc-redis-s pull request 69](https://github.com/agentica-lang/agc-redis-s/pull/69); `tools/bench.py` in that repository reruns them.
 
 ## Fixed
 
@@ -45,3 +38,5 @@ With `Bytes.build`, LRANGE_100 runs 3.1 to 3.8 times as fast.
 - `JSON.decode` and codecs give a field's default for a missing key.
 
 To install or upgrade, see [getting started](https://www.agentica-lang.com/agentica/getting-started/).
+
+The latest patch release is 0.33.2; see the [releases](https://github.com/agentica-lang/agentica/releases).
