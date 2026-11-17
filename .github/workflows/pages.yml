@@ -58,6 +58,8 @@ jobs:
           else
             echo "no agentica code blocks"
           fi
+      # The theme's checks of the search tags: titles, canonical URLs, descriptions, cards, JSON-LD and the sitemap.
+      - run: make -C themes/docs-theme check-seo DIR="$PWD/public"
       - uses: actions/upload-pages-artifact@v5
         with:
           path: public

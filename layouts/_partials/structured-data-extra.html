@@ -1,4 +1,5 @@
-{{- /* A BlogPosting for each post of the blog section (the theme's hook, _partials/structured-data-extra.html). */ -}}
+{{- /* A BlogPosting for each post of the blog section (the theme's hook, _partials/structured-data-extra.html), with
+the image of its link card (social-image.html: the cover, else social.png). */ -}}
 {{- $nodes := slice }}
 {{- if and .IsPage (eq .Section "blog") }}
   {{- $post := dict
@@ -12,6 +13,7 @@
     "keywords" (.Params.tags | default slice)
   }}
   {{- with .Description }}{{ $post = merge $post (dict "description" .) }}{{ end }}
+  {{- with partial "social-image.html" . }}{{ $post = merge $post (dict "image" .url) }}{{ end }}
   {{- $nodes = $nodes | append $post }}
 {{- end }}
 {{- return $nodes -}}
