@@ -7,6 +7,9 @@
     - name: agentica-db
       url: /agentica-db/
       description: One API for SQLite, PostgreSQL and MySQL or MariaDB, and a small typed ORM on top.
+    - name: agentica-tui
+      url: /agentica-tui/
+      description: A terminal UI package with a typed view tree, an Elm-like loop, and key, mouse, paste and resize events, on termbox2.
     - name: Packages
       url: /packages/
       description: Small packages you add to a project with a git tag and a subdir.
