@@ -29,7 +29,6 @@
           description: an HTTP client with a pool of keep-alive connections and timeouts
         - name: jobs
           url: /packages/jobs/
-          unreleased: true
           description: jobs with a swappable backend, leases, retries and dead jobs
         - name: native-gen
           url: /packages/native-gen/
