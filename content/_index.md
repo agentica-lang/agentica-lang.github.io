@@ -14,10 +14,15 @@ struct Book
   pages: Int
 end
 
-def long?(book: Book) -> Bool = book.pages > 300
+def long?(book: Book) -> Bool
+  book.pages > 300
+end
 
 def main() -> Void
-  books = [Book(title: "Dune", pages: 412), Book(title: "Emma", pages: 192)]
+  books = [
+    Book(title: "Dune", pages: 412),
+    Book(title: "Emma", pages: 192)
+  ]
   books.each do |book|
     if long?(book)
       puts("#{book.title} is long")
@@ -26,7 +31,7 @@ def main() -> Void
     end
   end
 
-  total = books.map { |book| book.pages }.sum
+  total = books.map { |b| b.pages }.sum
   puts("#{total} pages in all")
 end
 ```
@@ -42,12 +47,12 @@ Emma is short
 Write `pages: "412"` instead, and the program does not run:
 
 ```text
-books.agc:9:39 error[CHECK-TYPE-MISMATCH]
+books.agc:12:32 error[CHECK-TYPE-MISMATCH]
 expected Int, found String
 
-9 |   books = [Book(title: "Dune", pages: "412"), Book(title: "Emma", pages: 192)]
-  |                                       ^^^^^
-  = help: convert it with s.to_i!
+12 |     Book(title: "Dune", pages: "412"),
+   |                                ^^^^^
+   = help: convert it with s.to_i!
 ```
 
 ## Why Agentica

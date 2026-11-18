@@ -349,12 +349,12 @@ agentica test
 ```
 
 ```text
-PASS test/todos_test.agc / creates and reads a todo
-PASS test/todos_test.agc / refuses an empty title
+PASS /home/you/todos/test/todos_test.agc / creates and reads a todo
+PASS /home/you/todos/test/todos_test.agc / refuses an empty title
 2 passed, 0 failed, 0 skipped, 0 not executed, 0 file errors
 ```
 
-The project also passes `agentica check`, `agentica lint` and `agentica fmt --check`.
+Each line shows the full path of the test file, so yours differs from `/home/you/todos`. The project also passes `agentica check`, `agentica lint` and `agentica fmt --check`.
 
 ## The whole file
 

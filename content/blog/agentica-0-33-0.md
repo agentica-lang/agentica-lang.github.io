@@ -39,4 +39,4 @@ With `Bytes.build` building the replies, LRANGE_100 runs 3 to 4 times as fast. T
 
 To install or upgrade, see [getting started](https://www.agentica-lang.com/agentica/getting-started/).
 
-The latest patch release is 0.33.2; see the [releases](https://github.com/agentica-lang/agentica/releases).
+The last patch release of 0.33 is 0.33.2; see the [releases](https://github.com/agentica-lang/agentica/releases).
