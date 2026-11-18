@@ -26,3 +26,4 @@ llms:
   - cchecker
   - agentica-tui
   - agc-agent
+  - agentica-db
