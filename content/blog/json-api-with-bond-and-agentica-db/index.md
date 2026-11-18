@@ -13,7 +13,7 @@ This tutorial builds a small JSON API in [Agentica](https://www.agentica-lang.co
 
 You will see JSON in and out, routes with path params, a filter that checks an API key, validation that answers `422`, and a test. The whole program is one file of about 110 lines. The code comes in pieces, in the order of the file, so pasting the pieces one after another gives the file. The last section has it in one block, ready to copy and run.
 
-Everything here ran on Agentica 0.33.0, Bond 0.14.0 and agentica-db 0.13.0. You need Agentica on your `PATH`, the `libsqlite3` library (the package `libsqlite3-0` on Debian and Ubuntu) and a C compiler. The compiler builds the native SQLite driver the first time the program runs. Without one, agentica-db prints a warning and uses a slower driver.
+Everything here ran on Agentica 0.34.1, Bond 0.14.0 and agentica-db 0.13.0. You need Agentica on your `PATH`, the `libsqlite3` library (the package `libsqlite3-0` on Debian and Ubuntu) and a C compiler. The compiler builds the native SQLite driver the first time the program runs. Without one, agentica-db prints a warning and uses a slower driver.
 
 ## 1. The project
 
@@ -349,12 +349,12 @@ agentica test
 ```
 
 ```text
-PASS test/todos_test.agc / creates and reads a todo
-PASS test/todos_test.agc / refuses an empty title
+PASS /home/you/todos/test/todos_test.agc / creates and reads a todo
+PASS /home/you/todos/test/todos_test.agc / refuses an empty title
 2 passed, 0 failed, 0 skipped, 0 not executed, 0 file errors
 ```
 
-The project also passes `agentica check`, `agentica lint` and `agentica fmt --check`.
+Each line shows the full path of the test file, so yours differs from `/home/you/todos`. The project also passes `agentica check`, `agentica lint` and `agentica fmt --check`.
 
 ## The whole file
 
