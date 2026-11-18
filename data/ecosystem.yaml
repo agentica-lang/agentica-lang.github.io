@@ -50,7 +50,6 @@
           description: a WebSocket client for ws:// and wss://
         - name: yaml
           url: /packages/yaml/
-          unreleased: true
           description: parses YAML text into JSON values
 - group: Tools
   projects:
