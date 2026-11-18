@@ -42,6 +42,9 @@
         - name: prop
           url: /packages/prop/
           description: property-based testing, with the smallest input that breaks a law
+        - name: telemetry
+          url: /packages/telemetry/
+          description: events and spans that libraries emit and apps route to their own handlers
         - name: websocket-client
           url: /packages/websocket-client/
           description: a WebSocket client for ws:// and wss://
