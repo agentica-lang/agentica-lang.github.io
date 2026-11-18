@@ -26,4 +26,5 @@ llms:
   - cchecker
   - agentica-tui
   - agc-agent
+  - bond
   - agentica-db
