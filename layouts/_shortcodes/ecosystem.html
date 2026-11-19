@@ -4,11 +4,11 @@
 <ul class="pages">
   {{- range .projects }}
   <li>
-    <a href="{{ .url }}">{{ .name }}</a> <span>{{ partial "text.html" (dict "item" . "field" "description") | markdownify }}</span>
+    <a href="{{ .url }}">{{ partial "text.html" (dict "item" . "field" "name") }}</a> <span>{{ partial "text.html" (dict "item" . "field" "description") | markdownify }}</span>
     {{- with .highlights }}
     <ul>
       {{- range . }}
-      <li><a href="{{ .url }}">{{ .name }}</a>{{ if .unreleased }} (unreleased){{ end }} <span>{{ partial "text.html" (dict "item" . "field" "description") | markdownify }}</span></li>
+      <li><a href="{{ .url }}">{{ partial "text.html" (dict "item" . "field" "name") }}</a>{{ if .unreleased }} (unreleased){{ end }} <span>{{ partial "text.html" (dict "item" . "field" "description") | markdownify }}</span></li>
       {{- end }}
     </ul>
     {{- end }}

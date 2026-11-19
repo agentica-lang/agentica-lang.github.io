@@ -17,6 +17,7 @@
       description: A terminal UI package with a typed view tree, an Elm-like loop, and key, mouse, paste and resize events, on termbox2.
       description_es: Un paquete para interfaces de terminal, con un árbol de vistas con tipos, un bucle al estilo Elm y eventos de teclado, ratón, pegado y cambio de tamaño, sobre termbox2.
     - name: Packages
+      name_es: Paquetes
       url: /packages/
       description: Small packages you add to a project with a git tag and a subdir.
       description_es: Paquetes pequeños que añades a un proyecto con una etiqueta de git y un subdirectorio.
@@ -40,7 +41,7 @@
         - name: jobs
           url: /packages/jobs/
           description: jobs with a swappable backend, leases, retries and dead jobs
-          description_es: trabajos con un backend intercambiable, arrendamientos, reintentos y trabajos muertos
+          description_es: trabajos con un backend intercambiable, leases, reintentos y trabajos muertos
         - name: native-gen
           url: /packages/native-gen/
           description: the C header of an `extern module` block

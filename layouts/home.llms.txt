@@ -24,6 +24,6 @@
 {{- $site := . }}
 {{- $name := cond (eq . "agentica") "Agentica" . }}
 {{- $description := cond (eq . "agentica") (partial "t.html" "agentica_description") "" }}
-{{- range hugo.Data.ecosystem }}{{ range .projects }}{{ if eq .url (printf "/%s/" $site) }}{{ $name = .name }}{{ $description = partial "text.html" (dict "item" . "field" "description") }}{{ end }}{{ end }}{{ end }}
+{{- range hugo.Data.ecosystem }}{{ range .projects }}{{ if eq .url (printf "/%s/" $site) }}{{ $name = partial "text.html" (dict "item" . "field" "name") }}{{ $description = partial "text.html" (dict "item" . "field" "description") }}{{ end }}{{ end }}{{ end }}
 - [{{ $name }}]({{ printf "%s/llms.txt" $site | absURL }}){{ with $description }}: {{ . }}{{ end }}
 {{- end }}

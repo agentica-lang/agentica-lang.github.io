@@ -14,6 +14,7 @@ defaultContentLanguageInSubdir = false
 [languages.en]
 label = "English"
 locale = "en"
+contentDir = "content"
 title = "Agentica"
 weight = 1
 
@@ -23,6 +24,8 @@ weight = 1
 [languages.es]
 label = "Español"
 locale = "es"
+# The Spanish pages: the same paths as content/, only the home and the ecosystem page.
+contentDir = "content.es"
 title = "Agentica"
 weight = 2
 disableKinds = ["taxonomy", "term"]
@@ -83,19 +86,6 @@ disableKinds = ["taxonomy", "term"]
   baseName = "sitemap"
   isPlainText = true
   root = true
-
-# The English pages are the content/ folder, the Spanish ones content.es/ (the same paths). The blog is English only.
-[[module.mounts]]
-  source = "content"
-  target = "content"
-  [module.mounts.sites.matrix]
-    languages = ["en"]
-
-[[module.mounts]]
-  source = "content.es"
-  target = "content"
-  [module.mounts.sites.matrix]
-    languages = ["es"]
 
 [module.hugoVersion]
   extended = true

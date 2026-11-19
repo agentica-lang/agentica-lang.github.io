@@ -9,8 +9,7 @@ Spanish); the names are the Spanish ones on the Spanish site (name_es). */ -}}
     {{- range hugo.Data.projects.nav }}
     {{- $href := .url }}
     {{- with and (hasPrefix .url "/") (site.GetPage .url) }}{{ $href = .RelPermalink }}{{ end }}
-    {{- $name := .name }}
-    {{- with and (eq site.Language.Locale "es") .name_es }}{{ $name = . }}{{ end }}
+    {{- $name := partial "text.html" (dict "item" . "field" "name") }}
     {{- $here := and (hasPrefix .url "/") (hasPrefix $current.RelPermalink $href) }}
     <li><a href="{{ $href }}"{{ if $here }} aria-current="page"{{ end }}>{{ $name }}</a></li>
     {{- end }}
