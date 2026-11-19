@@ -293,8 +293,6 @@ $ api http://127.0.0.1:4567/todos
 
 The first call has no key, so the filter answers `401`. A new todo is `201` with its `id`. The `GET` of a todo that does not exist is a `404`, and so is the second `DELETE` of the same id. A blank title is a `422` with our message, and a body with no `title` at all is a `400` from Bond. The server's terminal shows one line per request, such as `GET /todos/99`, from the log filter.
 
-In the list, the keys are in alphabetical order. A JSON object has no order, and `JSON.from` writes them sorted, while `Bond.json_as` keeps the order of the struct.
-
 ## 10. A test (optional)
 
 You can stop here. If you want a test, put this in `test/todos_test.agc`. It is a second file, and `agentica test` finds it in the `test/` folder.
