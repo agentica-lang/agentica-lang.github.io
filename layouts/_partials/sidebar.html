@@ -1,11 +1,17 @@
-{{- /* Home, then the links of data/projects.yaml: the pages of this site and the project sites under the same domain. */ -}}
+{{- /* Home, then the links of data/projects.yaml: the pages of this site and the project sites under the same domain. A link
+to a page of this site goes to that page in the current language when it has one (/ecosystem/ is /es/ecosystem/ in
+Spanish); the names are the Spanish ones on the Spanish site (name_es). */ -}}
 {{- $current := . -}}
-<nav class="sidebar" id="sidebar" aria-label="Site" tabindex="-1">
+<nav class="sidebar" id="sidebar" aria-label="{{ partial "t.html" "site_nav" }}" tabindex="-1">
+  {{- partial "lang-select.html" (dict "page" . "class" "lang-select-menu") }}
   <ul>
-    <li><a href="{{ site.Home.RelPermalink }}"{{ if .IsHome }} aria-current="page"{{ end }}>Home</a></li>
+    <li><a href="{{ site.Home.RelPermalink }}"{{ if .IsHome }} aria-current="page"{{ end }}>{{ partial "t.html" "home" }}</a></li>
     {{- range hugo.Data.projects.nav }}
-    {{- $here := and (hasPrefix .url "/") (hasPrefix $current.RelPermalink .url) }}
-    <li><a href="{{ .url }}"{{ if $here }} aria-current="page"{{ end }}>{{ .name }}</a></li>
+    {{- $href := .url }}
+    {{- with and (hasPrefix .url "/") (site.GetPage .url) }}{{ $href = .RelPermalink }}{{ end }}
+    {{- $name := partial "text.html" (dict "item" . "field" "name") }}
+    {{- $here := and (hasPrefix .url "/") (hasPrefix $current.RelPermalink $href) }}
+    <li><a href="{{ $href }}"{{ if $here }} aria-current="page"{{ end }}>{{ $name }}</a></li>
     {{- end }}
   </ul>
 </nav>

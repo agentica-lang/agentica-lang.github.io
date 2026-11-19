@@ -1,13 +1,14 @@
 {{- range hugo.Data.ecosystem }}
-<h2 id="{{ .group | anchorize }}">{{ .group }}</h2>
+{{- $group := partial "text.html" (dict "item" . "field" "group") }}
+<h2 id="{{ $group | anchorize }}">{{ $group }}</h2>
 <ul class="pages">
   {{- range .projects }}
   <li>
-    <a href="{{ .url }}">{{ .name }}</a> <span>{{ .description | markdownify }}</span>
+    <a href="{{ .url }}">{{ partial "text.html" (dict "item" . "field" "name") }}</a> <span>{{ partial "text.html" (dict "item" . "field" "description") | markdownify }}</span>
     {{- with .highlights }}
     <ul>
       {{- range . }}
-      <li><a href="{{ .url }}">{{ .name }}</a>{{ if .unreleased }} (unreleased){{ end }} <span>{{ .description | markdownify }}</span></li>
+      <li><a href="{{ .url }}">{{ partial "text.html" (dict "item" . "field" "name") }}</a>{{ if .unreleased }} (unreleased){{ end }} <span>{{ partial "text.html" (dict "item" . "field" "description") | markdownify }}</span></li>
       {{- end }}
     </ul>
     {{- end }}

@@ -1,14 +1,44 @@
 # The look, the layouts and the outputs come from the docs theme (themes/docs-theme), as on the docs sites.
 _merge = "deep"
 baseURL = "https://www.agentica-lang.com/"
-locale = "en"
-title = "Agentica"
 theme = "docs-theme"
 enableRobotsTXT = true
 # The sitemap dates each page by its last commit (pages.yml checks out the whole history).
 enableGitInfo = true
 # Tag pages keep the tag as written ("agentica-db", not "Agentica-Db").
 capitalizeListTitles = false
+# English at the root, Spanish under /es/. Each language has its own content mount below.
+defaultContentLanguage = "en"
+defaultContentLanguageInSubdir = false
+
+[languages.en]
+label = "English"
+locale = "en"
+contentDir = "content"
+title = "Agentica"
+weight = 1
+
+[languages.en.params]
+  ogLocale = "en_US"
+
+[languages.es]
+label = "Español"
+locale = "es"
+# The Spanish pages: the same paths as content/, only the home and the ecosystem page.
+contentDir = "content.es"
+title = "Agentica"
+weight = 2
+disableKinds = ["taxonomy", "term"]
+
+[languages.es.params]
+  ogLocale = "es_ES"
+  description = "Agentica es Ruby con tipos estáticos: sintaxis parecida a Ruby, comprobada antes de ejecutar, con valores inmutables."
+  tagline = "Ruby con tipos estáticos"
+  socialImageAlt = "Agentica: Ruby con tipos estáticos"
+
+# The Spanish site has no tag pages (the blog is English only) and no feed or sitemap index (those are the English site's).
+[languages.es.outputs]
+  home = ["html", "markdown", "search", "llms", "llmsfull"]
 
 [params]
   description = "Agentica is Ruby with static types: Ruby-like syntax, checked before running, with immutable values."

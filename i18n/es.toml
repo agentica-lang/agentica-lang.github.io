@@ -1,0 +1,14 @@
+# The site's own words, which the theme does not have. Hugo merges them per key with the theme's i18n/es.toml,
+# so the theme's words still resolve here. Placeholders in braces stay as they are.
+
+# La página de inicio y la de ecosistema de este sitio
+latest_posts = "Artículos recientes"
+all_posts = "Todos los artículos"
+no_posts = "Todavía no hay artículos."
+projects_title = "Proyectos"
+projects_intro = "Cada sitio de proyecto tiene su propio llms.txt."
+agentica_description = "La documentación del lenguaje: el tour, la biblioteca de módulos integrados, la línea de comandos y la especificación."
+
+# Una página en español cuya página en inglés cambió después de su traducción (su source_hash)
+stale_notice = "Esta página puede estar desactualizada: la página en inglés cambió después de esta traducción."
+stale_link = "Lee la página en inglés"

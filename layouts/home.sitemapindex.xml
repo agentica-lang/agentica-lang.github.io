@@ -1,6 +1,9 @@
 {{- printf "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\"?>" | safeHTML }}
 <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <sitemap><loc>{{ "sitemap-home.xml" | absURL }}</loc></sitemap>
+  {{- /* The home sitemap of each language. Hugo writes it under the language's code, the English one under en/ too. */ -}}
+  {{- range hugo.Sites }}
+  <sitemap><loc>{{ printf "%s%s/sitemap-home.xml" site.Home.Permalink .Language.Lang }}</loc></sitemap>
+  {{- end }}
   {{- range hugo.Data.projects.sites }}
   <sitemap><loc>{{ printf "%s/sitemap.xml" . | absURL }}</loc></sitemap>
   {{- end }}

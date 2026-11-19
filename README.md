@@ -13,3 +13,9 @@ Posts go in `content/blog/`; `draft: true` keeps one unpublished. A post's
 link card uses its `cover.*` image (alt text: `imageAlt`), else
 `static/social.png`, which `sh tools/social-image.sh` makes with headless
 Chromium from `tools/social-image.html`.
+
+Spanish pages live in `content.es/`, at the same paths as their English pages
+in `content/` (under `/es/`). The blog is English only. A Spanish page has a
+`source_hash`: the first 12 hex digits of the SHA-256 of the English file
+(`sha256sum content/X.md | cut -c1-12`). It is checked by hand; when it no
+longer matches, the page shows a note that the English page changed.

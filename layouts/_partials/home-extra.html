@@ -1,3 +1,4 @@
-<h2 id="latest-posts">Latest posts</h2>
-{{ partial "post-list.html" (first 5 (where site.RegularPages "Section" "blog")) }}
-<p><a href="{{ "blog/" | relURL }}">All posts</a> · <a href="{{ "blog/index.xml" | relURL }}">RSS</a></p>
+{{- /* The blog is English only, so its posts come from the default language's site, on the Spanish home too. */ -}}
+<h2 id="latest-posts">{{ partial "t.html" "latest_posts" }}</h2>
+{{ partial "post-list.html" (first 5 (where hugo.Sites.Default.RegularPages "Section" "blog")) }}
+<p><a href="{{ "blog/" | relURL }}">{{ partial "t.html" "all_posts" }}</a> · <a href="{{ "blog/index.xml" | relURL }}">RSS</a></p>
