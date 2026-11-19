@@ -1,0 +1,15 @@
+{{- /* A note on a Spanish page whose English page changed after its translation: the page's source_hash (the first 12 hex
+digits of the SHA-256 of the English file) is not the English file's now. The English page and a page with no source_hash
+show nothing. The hash is written by hand in the translation's PR; the build only compares it. The English file is read by
+its absolute name, since a relative one resolves through the Spanish site's content mount. */ -}}
+{{- $page := . -}}
+{{- if and .Params.source_hash (ne site.Language.Locale hugo.Sites.Default.Language.Locale) -}}
+  {{- with hugo.Sites.Default.GetPage .Path -}}
+    {{- $hash := substr (crypto.SHA256 (readFile .File.Filename)) 0 12 -}}
+    {{- if ne $hash $page.Params.source_hash }}
+<aside class="translation-notice" data-translation="stale">
+  <p>{{ partial "t.html" "stale_notice" }} <a href="{{ .RelPermalink }}" hreflang="en">{{ partial "t.html" "stale_link" }}</a>.</p>
+</aside>
+    {{- end -}}
+  {{- end -}}
+{{- end -}}

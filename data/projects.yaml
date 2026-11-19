@@ -1,14 +1,20 @@
-# The links of the sidebar, after Home.
+# The links of the sidebar, after Home. `name_es` is the Spanish name; a `url` of this site (such as /ecosystem/) goes to
+# its Spanish page on /es/ when that page exists.
 nav:
   - name: Documentation
+    name_es: Documentación
     url: /agentica/
   - name: Library
+    name_es: Biblioteca
     url: /agentica/library/
   - name: Blog
+    name_es: Blog
     url: /blog/
   - name: Ecosystem
+    name_es: Ecosistema
     url: /ecosystem/
   - name: GitHub
+    name_es: GitHub
     url: https://github.com/agentica-lang
 # The repos with a project site at /<repo>/: /sitemap.xml lists each one's sitemap.
 sites:

@@ -1,70 +1,94 @@
 # The Ecosystem page (/ecosystem/): one entry per project, in groups. A new project is one entry. `unreleased: true`
 # marks a package with no git tag yet, as the packages README does; drop it when the package is tagged.
+# The `_es` fields are the Spanish text of the Spanish page (/es/ecosystem/); a field left out shows the English.
 - group: Frameworks and libraries
+  group_es: Frameworks y bibliotecas
   projects:
     - name: Bond
       url: /bond/
       description: A small web framework in the spirit of Sinatra, with routes, filters, error pages and a test helper that needs no socket.
+      description_es: Un framework web pequeño, al estilo de Sinatra, con rutas, filtros, páginas de error y un auxiliar de pruebas que no necesita socket.
     - name: agentica-db
       url: /agentica-db/
       description: One API for SQLite, PostgreSQL and MySQL or MariaDB, and a small typed ORM on top.
+      description_es: Una sola API para SQLite, PostgreSQL y MySQL o MariaDB, y un ORM pequeño con tipos encima.
     - name: agentica-tui
       url: /agentica-tui/
       description: A terminal UI package with a typed view tree, an Elm-like loop, and key, mouse, paste and resize events, on termbox2.
+      description_es: Un paquete para interfaces de terminal, con un árbol de vistas con tipos, un bucle al estilo Elm y eventos de teclado, ratón, pegado y cambio de tamaño, sobre termbox2.
     - name: Packages
       url: /packages/
       description: Small packages you add to a project with a git tag and a subdir.
+      description_es: Paquetes pequeños que añades a un proyecto con una etiqueta de git y un subdirectorio.
       highlights:
         - name: bond-channels
           url: /packages/bond-channels/
           description: channels for Bond apps, as in Action Cable, one WebSocket per tab with channels and a pub/sub hub
+          description_es: canales para apps de Bond, como en Action Cable, un WebSocket por pestaña, con canales y un hub pub/sub
         - name: dns
           url: /packages/dns/
           description: a DNS client over TCP, TLS and HTTPS, with the nameservers you choose
+          description_es: un cliente DNS sobre TCP, TLS y HTTPS, con los servidores de nombres que elijas
         - name: dock
           url: /packages/dock/
           description: a TCP server with one task per client
+          description_es: un servidor TCP con una tarea por cliente
         - name: http-client
           url: /packages/http-client/
           description: an HTTP client with a pool of keep-alive connections and timeouts
+          description_es: un cliente HTTP con un pool de conexiones keep-alive y tiempos de espera
         - name: jobs
           url: /packages/jobs/
           description: jobs with a swappable backend, leases, retries and dead jobs
+          description_es: trabajos con un backend intercambiable, arrendamientos, reintentos y trabajos muertos
         - name: native-gen
           url: /packages/native-gen/
           description: the C header of an `extern module` block
+          description_es: la cabecera de C de un bloque `extern module`
         - name: native-prebuilt
           url: /packages/native-prebuilt/
           description: a GitHub workflow that builds a native module on the five targets
+          description_es: un flujo de trabajo de GitHub que compila un módulo nativo en las cinco plataformas
         - name: pool
           url: /packages/pool/
           description: a pool of long-lived resources, lent to one caller at a time
+          description_es: un pool de recursos de larga vida, prestados a un solo llamador a la vez
         - name: prop
           url: /packages/prop/
           description: property-based testing, with the smallest input that breaks a law
+          description_es: pruebas basadas en propiedades, con la entrada más pequeña que rompe una ley
         - name: telemetry
           url: /packages/telemetry/
           description: events and spans that libraries emit and apps route to their own handlers
+          description_es: eventos y spans que las bibliotecas emiten y las apps envían a sus propios handlers
         - name: websocket-client
           url: /packages/websocket-client/
           description: a WebSocket client for ws:// and wss://
+          description_es: un cliente WebSocket para ws:// y wss://
         - name: yaml
           url: /packages/yaml/
           description: parses YAML text into JSON values
+          description_es: convierte texto YAML en valores JSON
 - group: Tools
+  group_es: Herramientas
   projects:
     - name: Finn
       url: /agc-agent/
       description: A coding agent for the terminal, written in Agentica, with a local server, a line-mode client and a full-screen TUI.
+      description_es: Un agente de programación para la terminal, escrito en Agentica, con un servidor local, un cliente de modo línea y una TUI de pantalla completa.
     - name: cchecker
       url: /cchecker/
       description: Checks C code for the rules of a project, and runs gcc -fanalyzer and clang-tidy in one command.
+      description_es: Comprueba código C con las reglas de un proyecto, y ejecuta gcc -fanalyzer y clang-tidy en un solo comando.
     - name: agc-lsp
       url: https://github.com/agentica-lang/agc-lsp
       description: The language server (LSP) for Agentica, for editors that speak LSP.
+      description_es: El servidor de lenguaje (LSP) de Agentica, para editores que hablan LSP.
     - name: tree-sitter-agentica
       url: https://github.com/agentica-lang/tree-sitter-agentica
       description: The tree-sitter grammar of Agentica, for editors that parse with tree-sitter.
+      description_es: La gramática tree-sitter de Agentica, para editores que analizan con tree-sitter.
     - name: agc-tmlanguage
       url: https://github.com/agentica-lang/agc-tmlanguage
       description: The TextMate grammar that colors Agentica code in editors and on these sites.
+      description_es: La gramática TextMate que colorea el código de Agentica en editores y en estos sitios.

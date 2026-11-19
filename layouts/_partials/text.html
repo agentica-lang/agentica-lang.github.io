@@ -1,0 +1,5 @@
+{{- /* A field of a data entry (data/ecosystem.yaml, data/projects.yaml) in the language of the site: `<field>_es` on the
+Spanish site when the entry has one, else the field itself. The entry is `item`, the field name is `field`. */ -}}
+{{- $text := index .item .field -}}
+{{- if eq site.Language.Locale "es" }}{{ with index .item (printf "%s_es" .field) }}{{ $text = . }}{{ end }}{{ end -}}
+{{- return $text -}}

@@ -8,7 +8,7 @@
 {{ with partial "llms-version.html" . }}{{ . }}
 
 {{ end -}}
-Every page of this site is also published as Markdown, and the links below point to those versions. [llms-full.txt]({{ (.OutputFormats.Get "llmsfull").Permalink }}) has the full text of all pages in one file.
+{{ replace (partial "t.html" "llms_intro") "{url}" (.OutputFormats.Get "llmsfull").Permalink }}
 {{- range partial "llms-groups.html" . }}
 
 ## {{ .title }}
@@ -17,13 +17,13 @@ Every page of this site is also published as Markdown, and the links below point
 {{- end }}
 {{- end }}
 
-## Projects
+## {{ partial "t.html" "projects_title" }}
 
-Each project site has its own llms.txt.
+{{ partial "t.html" "projects_intro" }}
 {{ range hugo.Data.projects.llms }}
 {{- $site := . }}
 {{- $name := cond (eq . "agentica") "Agentica" . }}
-{{- $description := cond (eq . "agentica") "The language docs: the tour, the library of builtin modules, the command line and the specification." "" }}
-{{- range hugo.Data.ecosystem }}{{ range .projects }}{{ if eq .url (printf "/%s/" $site) }}{{ $name = .name }}{{ $description = .description }}{{ end }}{{ end }}{{ end }}
+{{- $description := cond (eq . "agentica") (partial "t.html" "agentica_description") "" }}
+{{- range hugo.Data.ecosystem }}{{ range .projects }}{{ if eq .url (printf "/%s/" $site) }}{{ $name = .name }}{{ $description = partial "text.html" (dict "item" . "field" "description") }}{{ end }}{{ end }}{{ end }}
 - [{{ $name }}]({{ printf "%s/llms.txt" $site | absURL }}){{ with $description }}: {{ . }}{{ end }}
 {{- end }}

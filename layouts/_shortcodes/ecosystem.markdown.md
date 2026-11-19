@@ -1,9 +1,9 @@
 {{- range hugo.Data.ecosystem }}
-## {{ .group }}
+## {{ partial "text.html" (dict "item" . "field" "group") }}
 {{ range .projects }}
-- [{{ .name }}]({{ .url | absURL }}): {{ .description }}
+- [{{ .name }}]({{ .url | absURL }}): {{ partial "text.html" (dict "item" . "field" "description") }}
 {{- range .highlights }}
-  - [{{ .name }}]({{ .url | absURL }}){{ if .unreleased }} (unreleased){{ end }}: {{ .description }}
+  - [{{ .name }}]({{ .url | absURL }}){{ if .unreleased }} (unreleased){{ end }}: {{ partial "text.html" (dict "item" . "field" "description") }}
 {{- end }}
 {{- end }}
 {{ end }}
