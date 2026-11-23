@@ -85,7 +85,7 @@ end
 Fri 15 Jan 2027, 08:00
 ```
 
-`std/utc` is deprecated, and it is removed in 0.36.0: use `Time`. See [dates and times](https://www.agentica-lang.com/agentica/library/io-and-system/time/).
+`std/utc` is deprecated, and it will be removed in a later release: use `Time`. See [dates and times](https://www.agentica-lang.com/agentica/library/io-and-system/time/).
 
 ### JSON keeps key order, and values compare with ==
 
