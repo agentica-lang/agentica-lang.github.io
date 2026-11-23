@@ -93,7 +93,7 @@ Native API 1.5 adds the `AN_FRESH` flag for a native function. A function marked
 
 A module built with the API 1.5 header needs agentica 0.37.0 or later. An older agentica refuses it with `RUNTIME-NATIVE-LOAD`.
 
-In the ml package, a pull request marks the libtorch functions `AN_FRESH` ([agentica-lang/ml#70](https://github.com/agentica-lang/ml/pull/70)). On whisper-tiny with libtorch, on one CPU machine, the real-time factor of an 11 s clip went from 0.67 to 0.34. The peak memory went from 1.48 GB to 0.95 GB. The pull request is still open.
+In the ml package ([agentica-lang/ml#70](https://github.com/agentica-lang/ml/pull/70)), the libtorch functions are marked `AN_FRESH`. On CPU, whisper-tiny on libtorch went from an RTF of 0.67 to 0.34 on an 11 s clip, and the peak memory went from 1.48 to 0.95 GB.
 
 See [the C side of native modules](https://www.agentica-lang.com/agentica/library/io-and-system/native/modules/#the-c-side).
 
