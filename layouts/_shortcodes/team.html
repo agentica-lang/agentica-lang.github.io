@@ -1,0 +1,23 @@
+{{- range hugo.Data.team }}
+{{- $group := partial "text.html" (dict "item" . "field" "group") }}
+<h2 id="{{ $group | anchorize }}">{{ $group }}</h2>
+<ul class="pages">
+  {{- range .people }}
+  <li style="display:flex;gap:1rem;align-items:center">
+    {{- with .avatar }}
+    <img src="{{ . }}" width="80" height="80" alt="" style="flex:none;width:5rem;height:5rem;border-radius:50%">
+    {{- end }}
+    {{- with .letter }}
+    <svg viewBox="0 0 80 80" width="80" height="80" aria-hidden="true" focusable="false" style="flex:none;width:5rem;height:5rem">
+      <circle cx="40" cy="40" r="39" style="fill:var(--mark-bg);stroke:var(--accent);stroke-width:2"/>
+      <text x="40" y="40" dy=".35em" text-anchor="middle" style="fill:var(--accent);font-family:var(--font);font-size:40px;font-weight:600">{{ . }}</text>
+    </svg>
+    {{- end }}
+    <div>
+      <a href="{{ .url }}">{{ partial "text.html" (dict "item" . "field" "name") }}</a>
+      <p style="margin:0.2rem 0 0">{{ partial "text.html" (dict "item" . "field" "line") }}</p>
+    </div>
+  </li>
+  {{- end }}
+</ul>
+{{- end }}

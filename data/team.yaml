@@ -1,0 +1,20 @@
+# The Team page (/team/): one group per kind of member, each with its people. A person has a `name`, a `url`, a `line`
+# (one line under the name) and either an `avatar` (a picture URL, shown round) or a `letter` (a circle with that letter,
+# for a member with no picture). The `_es` fields are the Spanish text of the Spanish page (/es/team/); a field left out
+# shows the English.
+- group: Benevolent Dictator For Life (BDFL)
+  group_es: Dictador benevolente de por vida (BDFL)
+  people:
+    - name: Johanderson Mogollon (sonic182)
+      url: https://github.com/sonic182
+      avatar: https://avatars.githubusercontent.com/u/4070466?s=160
+      line: Sets the direction of the language and decides what goes in. The title is known from Python and Linux.
+      line_es: Marca el rumbo del lenguaje y decide qué entra. Es el título que Python y Linux dieron a conocer.
+- group: Honorary member
+  group_es: Miembro honorario
+  people:
+    - name: Claude
+      url: https://www.anthropic.com/claude
+      letter: C
+      line: An AI model by Anthropic that writes, reviews and tests much of the code, under the BDFL's direction.
+      line_es: Un modelo de IA de Anthropic que escribe, revisa y prueba buena parte del código, bajo la dirección del BDFL.
