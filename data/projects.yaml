@@ -13,6 +13,9 @@ nav:
   - name: Ecosystem
     name_es: Ecosistema
     url: /ecosystem/
+  - name: Team
+    name_es: Equipo
+    url: /team/
   - name: GitHub
     name_es: GitHub
     url: https://github.com/agentica-lang
