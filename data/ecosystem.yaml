@@ -16,6 +16,10 @@
       url: /agentica-tui/
       description: A terminal UI package with a typed view tree, an Elm-like loop, and key, mouse, paste and resize events, on termbox2.
       description_es: Un paquete para interfaces de terminal, con un árbol de vistas con tipos, un bucle al estilo Elm y eventos de teclado, ratón, pegado y cambio de tamaño, sobre termbox2.
+    - name: ml
+      url: /ml/
+      description: Machine learning in a functional style, with tensors on ggml, libtorch or XLA, training with Adam and LoRA, and Qwen3, DistilBERT and Whisper models.
+      description_es: Aprendizaje automático en estilo funcional, con tensores sobre ggml, libtorch o XLA, entrenamiento con Adam y LoRA, y los modelos Qwen3, DistilBERT y Whisper.
     - name: Packages
       name_es: Paquetes
       url: /packages/
