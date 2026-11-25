@@ -1,6 +1,6 @@
 ---
 title: Agentica 0.39.0
-description: Agentica 0.39.0 adds Terminal (tty?, raw mode, size and resize events), Term.encode and Term.decode for CBOR, agentica refs on imports and re-exports, and the LINT-NESTED-WRAPPER suggestion.
+description: Agentica 0.39.0 adds Terminal for full-screen programs, Term for CBOR, agentica refs on imports and re-exports, and LINT-NESTED-WRAPPER.
 date: 2026-11-25T19:43:40Z
 draft: false
 tags: [release]
