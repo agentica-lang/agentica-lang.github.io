@@ -1,7 +1,7 @@
 ---
 title: A Campfire port in Agentica, measured against Go
 description: A Campfire port in Agentica served four chat pages 17 to 44% faster than the Go port in the Campfire benchmark. The numbers, the method and the limits.
-date: 2026-11-17
+date: 2026-11-17T14:12:22Z
 draft: false
 tags: [performance, benchmark, bond, agentica-db, web]
 ---

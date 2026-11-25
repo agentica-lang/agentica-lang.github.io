@@ -1,7 +1,7 @@
 ---
 title: Agentica 0.33.0
 description: Agentica 0.33.0 adds Bytes.build, Actor.send and Actor.await, pseudo-terminals and Native.arena, and makes network servers, text work and cached starts faster.
-date: 2026-11-16
+date: 2026-11-16T15:00:36Z
 draft: false
 tags: [release, performance]
 ---

@@ -1,7 +1,7 @@
 ---
 title: Agentica 0.35.0
 description: Agentica 0.35.0 adds HTTP downloads with no size limit, dates and times as checked values, and equality for JSON values.
-date: 2026-11-19
+date: 2026-11-19T09:44:55Z
 draft: false
 tags: [release]
 ---

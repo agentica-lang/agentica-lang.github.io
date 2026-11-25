@@ -1,7 +1,7 @@
 ---
 title: Agentica 0.36.0
 description: Agentica 0.36.0 adds a --max-steps flag to agentica test, so a run can set the step budget of each test or lift it.
-date: 2026-11-23
+date: 2026-11-23T06:47:06Z
 draft: false
 tags: [release]
 ---

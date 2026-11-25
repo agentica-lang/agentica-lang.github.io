@@ -1,7 +1,7 @@
 ---
 title: Agentica 0.37.0
 description: Agentica 0.37.0 adds agentica init, unbounded channels, a reason for closing a channel, File.seek, Math functions and Ref.new.
-date: 2026-11-23
+date: 2026-11-23T20:25:36Z
 draft: false
 tags: [release]
 ---

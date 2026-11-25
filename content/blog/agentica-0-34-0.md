@@ -1,7 +1,7 @@
 ---
 title: Agentica 0.34.0
 description: Agentica 0.34.0 adds an interactive REPL, prebuilt native modules, and better control of HTTP connections and timeouts.
-date: 2026-11-17
+date: 2026-11-17T17:51:39Z
 draft: false
 tags: [release]
 ---
