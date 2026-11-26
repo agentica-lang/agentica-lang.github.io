@@ -1,6 +1,6 @@
 ---
 title: Agentica 0.39.1
-description: Agentica 0.39.1 is a patch release: a program that hands the terminal to an editor or a shell keeps the keys typed there.
+description: Agentica 0.39.1 is a patch release that keeps the keys typed to an editor or a shell started by a program.
 date: 2026-11-26T01:14:55Z
 draft: false
 tags: [release]
