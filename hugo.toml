@@ -34,7 +34,7 @@ disableKinds = ["taxonomy", "term"]
   ogLocale = "es_ES"
   description = "Agentica es Ruby con tipos estáticos: sintaxis parecida a Ruby, comprobada antes de ejecutar, con valores inmutables."
   tagline = "Ruby con tipos estáticos"
-  socialImageAlt = "Agentica: Ruby con tipos estáticos"
+  socialImageAlt = "Agentica: Ruby con tipos estáticos, para agentes de IA y humanos"
 
 # The Spanish site has no tag pages (the blog is English only) and no feed or sitemap index (those are the English site's).
 [languages.es.outputs]
@@ -46,8 +46,8 @@ disableKinds = ["taxonomy", "term"]
   repo = "https://github.com/agentica-lang"
   repoPublic = true
   # The large link card of every page with no image of its own (tools/social-image.sh makes it).
-  socialImage = "/social.png"
-  socialImageAlt = "Agentica: Ruby with static types"
+  socialImage = "/social-card.png"
+  socialImageAlt = "Agentica: Ruby with static types, for AI agents and humans"
   # Every page links the blog feed (_partials/favicon.html), not its own or the root feed.
   feedLink = false
 
