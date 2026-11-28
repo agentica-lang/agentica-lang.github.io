@@ -1,6 +1,6 @@
 ---
 title: Agentica 0.40.0 beta 1 and 2
-description: Agentica 0.40.0 beta 1 and 2 bring file permissions and symbolic links, enum introspection, temporary files, file copying, host names, and packed Float32 lists.
+description: Agentica 0.40.0 beta 1 and 2 bring file permissions and symbolic links, enum introspection, file copying, host names, and packed Float32 lists.
 date: 2026-11-26T01:14:55Z
 draft: false
 tags: [release]
@@ -12,7 +12,7 @@ Agentica 0.40.0 beta 1 and beta 2 are out. Together, these previews add file and
 
 You can now set file and directory permission bits with `File.chmod`, create and read symbolic links with `File.symlink` and `File.readlink`, and copy a file with `File.copy`. `File.copy` preserves permission bits. Systems that do not support symbolic links return `io.unsupported`.
 
-`Archive.Options(keep_mode: true)` preserves permission bits when extracting TAR files. Beta 2 adds temporary files: open a path with `File.open(path, "temp")`, and the file is removed when the handle closes unless you move it first. The runtime also cleans it up if its task is cancelled or the run ends.
+`Archive.Options(keep_mode: true)` preserves permission bits when extracting TAR files.
 
 ## Enum introspection
 
