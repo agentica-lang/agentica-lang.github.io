@@ -1,7 +1,7 @@
 ---
 title: Agentica 0.40.0 beta 1 and 2
 description: Agentica 0.40.0 beta 1 and 2 bring file permissions and symbolic links, enum introspection, temporary files, file copying, host names, and packed Float32 lists.
-date: 2026-11-26T00:00:00Z
+date: 2026-11-26T01:14:55Z
 draft: false
 tags: [release]
 ---
